@@ -1,10 +1,11 @@
 package main
 
 import (
-	"bitbucket.org/dargzero/smart-status/sinks"
 	"fmt"
 	"os"
 	"strings"
+
+	"bitbucket.org/dargzero/smart-status/sinks"
 )
 
 func main() {
