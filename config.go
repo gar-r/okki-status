@@ -1,6 +1,6 @@
 package main
 
-import "smart-status/providers"
+import "bitbucket.org/dargzero/smart-status/providers"
 
 type Config struct {
 	Entries []Entry
