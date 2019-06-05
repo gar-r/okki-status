@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"time"
 
 	"bitbucket.org/dargzero/smart-status/sinks"
 )
@@ -11,21 +12,19 @@ import (
 func main() {
 	config := NewConfig()
 	sink := initSink()
+	for {
+		status := getStatus(config)
+		sink.Accept(status)
+		time.Sleep(1 * time.Second)
+	}
+}
+
+func getStatus(config *Config) string {
 	status := strings.Builder{}
 	for _, entry := range config.Entries {
 		status.WriteString(getFormattedData(entry))
 	}
-	sink.Accept(status.String())
-}
-
-func initSink() sinks.Sink {
-	var sink sinks.Sink
-	if os.Args[1] == "debug" {
-		sink = &sinks.StdOut{}
-	} else {
-		sink = &sinks.Xroot{}
-	}
-	return sink
+	return status.String()
 }
 
 func getFormattedData(entry Entry) string {
@@ -34,4 +33,18 @@ func getFormattedData(entry Entry) string {
 		data = fmt.Sprintf(entry.format, data)
 	}
 	return data
+}
+
+func initSink() sinks.Sink {
+	var sink sinks.Sink
+	if isDebugMode() {
+		sink = &sinks.StdOut{}
+	} else {
+		sink = &sinks.Xroot{}
+	}
+	return sink
+}
+
+func isDebugMode() bool {
+	return len(os.Args) >= 2 && os.Args[1] == "debug"
 }
