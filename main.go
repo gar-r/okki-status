@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 	"strings"
 	"time"
@@ -19,9 +20,8 @@ func main() {
 
 func getStatus() string {
 	status := strings.Builder{}
-	for _, module := range activeModules {
-		status.WriteString(module.Status())
-		status.WriteString(separator)
+	for _, entry := range config {
+		status.WriteString(fmt.Sprintf(entry.format, entry.module.Status()))
 	}
 	return status.String()
 }

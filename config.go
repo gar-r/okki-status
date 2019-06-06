@@ -2,8 +2,18 @@ package main
 
 import "bitbucket.org/dargzero/smart-status/modules"
 
-var separator = " "
+type entry struct {
+	module modules.Module
+	format string
+}
 
-var activeModules = []modules.Module{
-	&modules.Clock{Layout: "2006-01-02 15:04"},
+var config = []entry{
+	entry{
+		module: &modules.Battery{Battery: "BAT0", Charging: "(+)"},
+		format: "  B: %s  ",
+	},
+	entry{
+		module: &modules.Clock{Layout: "2006-01-02 15:04"},
+		format: "  %s ",
+	},
 }
