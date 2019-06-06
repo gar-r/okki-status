@@ -8,5 +8,5 @@ type StdOut struct {
 
 // Accept accepts the status string
 func (*StdOut) Accept(status string) {
-	fmt.Printf(status)
+	fmt.Println(status)
 }
