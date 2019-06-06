@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"os"
 	"strings"
 	"time"
@@ -10,29 +9,21 @@ import (
 )
 
 func main() {
-	config := NewConfig()
 	sink := initSink()
 	for {
-		status := getStatus(config)
+		status := getStatus()
 		sink.Accept(status)
 		time.Sleep(1 * time.Second)
 	}
 }
 
-func getStatus(config *Config) string {
+func getStatus() string {
 	status := strings.Builder{}
-	for _, entry := range config.Entries {
-		status.WriteString(getFormattedData(entry))
+	for _, module := range activeModules {
+		status.WriteString(module.Status())
+		status.WriteString(separator)
 	}
 	return status.String()
-}
-
-func getFormattedData(entry Entry) string {
-	data := entry.provider.GetData()
-	if entry.format != "" {
-		data = fmt.Sprintf(entry.format, data)
-	}
-	return data
 }
 
 func initSink() sinks.Sink {

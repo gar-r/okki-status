@@ -1,4 +1,4 @@
-package providers
+package modules
 
 import "time"
 
@@ -7,8 +7,8 @@ type Clock struct {
 	Layout string
 }
 
-// GetData returns the provided date/time status
-func (c *Clock) GetData() string {
+// Status returns the date/time in the format specified by Layout
+func (c *Clock) Status() string {
 	if c.Layout == "" {
 		c.Layout = time.ANSIC
 	}
