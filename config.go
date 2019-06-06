@@ -9,6 +9,10 @@ type entry struct {
 
 var config = []entry{
 	entry{
+		module: &modules.Wifi{Device: "wlp59s0"},
+		format: "  W: %s  ",
+	},
+	entry{
 		module: &modules.Battery{Battery: "BAT0", Charging: "(+)"},
 		format: "  B: %s  ",
 	},
