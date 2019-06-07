@@ -36,7 +36,7 @@ func (w *Wifi) findFirst(info []byte, re *regexp.Regexp) string {
 	if match := re.FindSubmatch(info); len(match) >= 2 {
 		return string(match[1])
 	}
-	return ""
+	return "?"
 }
 
 var wifiFn = func(device string) []byte {
