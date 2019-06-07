@@ -11,7 +11,7 @@ func TestBattery_Status(t *testing.T) {
 
 	var status, capacity string
 
-	queryFn = func(battery, attrib string) string {
+	batteryFn = func(battery, attrib string) string {
 		switch attrib {
 		case "status":
 			return status

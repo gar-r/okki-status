@@ -24,19 +24,19 @@ func (b *Battery) Status() string {
 }
 
 func (b *Battery) capacity() string {
-	capacity := queryFn(b.Battery, "capacity")
+	capacity := batteryFn(b.Battery, "capacity")
 	return fmt.Sprintf("%s%%", capacity)
 }
 
 func (b *Battery) status() string {
-	status := queryFn(b.Battery, "status")
+	status := batteryFn(b.Battery, "status")
 	if status == "Charging" {
 		return b.Charging
 	}
 	return ""
 }
 
-var queryFn = func(battery, attrib string) string {
+var batteryFn = func(battery, attrib string) string {
 	const pathFormat = "/sys/class/power_supply/%s/%s"
 	path := fmt.Sprintf(pathFormat, battery, attrib)
 	d, err := ioutil.ReadFile(path)

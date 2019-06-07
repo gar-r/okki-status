@@ -4,8 +4,8 @@ import (
 	"testing"
 )
 
-func TestWifi_Status(t  *testing.T) {
-	
+func TestWifi_Status(t *testing.T) {
+
 	const output = `Connected to 70:4f:57:61:7e:5e (on wlp59s0)
 		SSID: okki
 		freq: 5180
@@ -19,10 +19,14 @@ func TestWifi_Status(t  *testing.T) {
 		dtim period:    1
 		beacon int:     100`
 
-	wifi := &Wifi {Device: "wlp59s0"}
-	
+	wifiFn = func(device string) []byte {
+		return []byte(output)
+	}
+
+	wifi := &Wifi{Device: "wlp59s0"}
+
 	actual := wifi.Status()
-	expected := "okki (-66 dBm)"
+	expected := "okki (-64 dBm)"
 
 	if expected != actual {
 		t.Errorf("expected '%s', got '%s'", expected, actual)

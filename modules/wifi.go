@@ -13,7 +13,7 @@ type Wifi struct {
 
 // Status returns network name and signal strength
 func (w *Wifi) Status() string {
-	info := w.getInfo()
+	info := wifiFn(w.Device)
 	if info == nil {
 		return ""
 	}
@@ -39,8 +39,8 @@ func (w *Wifi) findFirst(info []byte, re *regexp.Regexp) string {
 	return ""
 }
 
-func (w *Wifi) getInfo() []byte {
-	out, err := exec.Command("iw", "dev", w.Device, "link").Output()
+var wifiFn = func(device string) []byte {
+	out, err := exec.Command("iw", "dev", device, "link").Output()
 	if err != nil {
 		return nil
 	}
