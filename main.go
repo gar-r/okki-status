@@ -3,18 +3,41 @@ package main
 import (
 	"fmt"
 	"os"
+	"os/exec"
 	"strings"
 	"time"
 
 	"bitbucket.org/dargzero/smart-status/sinks"
 )
 
+var debugMode bool
+var command string
+var args []string
+
 func main() {
+	readArgs()
 	sink := initSink()
-	for {
-		status := getStatus()
-		sink.Accept(status)
-		time.Sleep(1 * time.Second)
+	if command != "" {
+		execCommand()
+		updateStatus(sink)
+		return
+	} else {
+		for {
+			updateStatus(sink)
+			time.Sleep(1 * time.Second)
+		}
+	}
+}
+
+func updateStatus(sink sinks.Sink) {
+	status := getStatus()
+	sink.Accept(status)
+}
+
+func execCommand() {
+	err := exec.Command(command, args...).Run()
+	if err != nil {
+		os.Exit(1)
 	}
 }
 
@@ -28,7 +51,7 @@ func getStatus() string {
 
 func initSink() sinks.Sink {
 	var sink sinks.Sink
-	if isDebugMode() {
+	if debugMode {
 		sink = &sinks.StdOut{}
 	} else {
 		sink = &sinks.Xroot{}
@@ -36,6 +59,19 @@ func initSink() sinks.Sink {
 	return sink
 }
 
-func isDebugMode() bool {
-	return len(os.Args) >= 2 && os.Args[1] == "debug"
+func readArgs() {
+	for i, arg := range os.Args {
+		if i == 0 {
+			continue
+		}
+		if i == 1 {
+			if arg == "-d" || arg == "--debug" {
+				debugMode = true
+			} else {
+				command = arg
+			}
+		} else {
+			args = append(args, arg)
+		}
+	}
 }

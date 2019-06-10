@@ -9,19 +9,23 @@ type entry struct {
 
 var config = []entry{
 	{
-		module: &modules.Volume{},
-		format: " V: %s  ",
-	},
-	{
 		module: &modules.Wifi{Device: "wlp59s0"},
-		format: " N: %s  ",
+		format: "    %s   ",
 	},
 	{
-		module: &modules.Battery{Battery: "BAT0", Charging: "(+)"},
-		format: " B: %s  ",
+		module: &modules.Volume{},
+		format: "    %s   ",
+	},
+	{
+		module: &modules.Brightness{},
+		format: "    %s   ",
+	},
+	{
+		module: &modules.Battery{Battery: "BAT0", Charging: " ()"},
+		format: "    %s   ",
 	},
 	{
 		module: &modules.Clock{Layout: "2006-01-02 15:04"},
-		format: " %s ",
+		format: "    %s  ",
 	},
 }

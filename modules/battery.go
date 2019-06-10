@@ -19,8 +19,7 @@ type Battery struct {
 // Status returns the battery status string
 func (b *Battery) Status() string {
 	return strings.Trim(fmt.Sprintf("%s%s",
-		b.status(),
-		b.capacity()), " ")
+		b.capacity(), b.status()), " ")
 }
 
 func (b *Battery) capacity() string {
