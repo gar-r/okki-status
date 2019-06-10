@@ -33,7 +33,7 @@ func TestWifi_Status(t *testing.T) {
 		wifi := &Wifi{Device: "wlp59s0"}
 
 		actual := wifi.Status()
-		expected := "okki (?)"
+		expected := "okki"
 
 		if expected != actual {
 			t.Errorf("expected '%s', got '%s'", expected, actual)
@@ -46,7 +46,7 @@ func TestWifi_Status(t *testing.T) {
 		wifi := &Wifi{Device: "wlp59s0"}
 
 		actual := wifi.Status()
-		expected := "? (?)"
+		expected := "?"
 
 		if expected != actual {
 			t.Errorf("expected '%s', got '%s'", expected, actual)

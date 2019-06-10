@@ -10,16 +10,20 @@ type entry struct {
 // 🔊
 
 var config = []entry{
-	entry{
+	{
+		module: &modules.Volume{},
+		format: " V: %s  ",
+	},
+	{
 		module: &modules.Wifi{Device: "wlp59s0"},
-		format: " 🔗 %s  ",
+		format: " N: %s  ",
 	},
-	entry{
-		module: &modules.Battery{Battery: "BAT0", Charging: "⚡"},
-		format: " 🔋 %s  ",
+	{
+		module: &modules.Battery{Battery: "BAT0", Charging: "(+)"},
+		format: " B: %s  ",
 	},
-	entry{
+	{
 		module: &modules.Clock{Layout: "2006-01-02 15:04"},
-		format: " 🕒 %s ",
+		format: " %s ",
 	},
 }

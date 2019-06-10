@@ -15,11 +15,17 @@ type Wifi struct {
 func (w *Wifi) Status() string {
 	info := wifiFn(w.Device)
 	if info == nil {
-		return ""
+		return ":("
 	}
 	ssid := w.ssid(info)
-	signal := w.signal(info)
-	return fmt.Sprintf("%s (%s)", ssid, signal)
+	if ssid != "" {
+		signal := w.signal(info)
+		if signal != "" {
+			return fmt.Sprintf("%s (%s)", ssid, signal)
+		}
+		return ssid
+	}
+	return "?"
 }
 
 func (w *Wifi) ssid(info []byte) string {
@@ -36,7 +42,7 @@ func (w *Wifi) findFirst(info []byte, re *regexp.Regexp) string {
 	if match := re.FindSubmatch(info); len(match) >= 2 {
 		return string(match[1])
 	}
-	return "?"
+	return ""
 }
 
 var wifiFn = func(device string) []byte {
