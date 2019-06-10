@@ -7,8 +7,6 @@ type entry struct {
 	format string
 }
 
-// 🔊
-
 var config = []entry{
 	{
 		module: &modules.Volume{},
