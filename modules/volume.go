@@ -11,13 +11,14 @@ type Volume struct {
 
 // Status returns the volume status
 func (v *Volume) Status() string {
-	return strings.Trim(volumeFn(), "\n")
+	return volumeFn()
 }
 
 var volumeFn = func() string {
 	out, err := exec.Command("pamixer", "--get-volume-human").Output()
-	if err != nil {
+	volStr := strings.Trim(string(out), "\n")
+	if err != nil && volStr != "muted" {
 		return "?"
 	}
-	return string(out)
+	return volStr
 }
