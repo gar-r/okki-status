@@ -24,7 +24,7 @@ func main() {
 	} else {
 		for {
 			updateStatus(sink)
-			time.Sleep(1 * time.Second)
+			time.Sleep(1 * time.Minute)
 		}
 	}
 }
