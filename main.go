@@ -21,11 +21,10 @@ func main() {
 		execCommand()
 		updateStatus(sink)
 		return
-	} else {
-		for {
-			updateStatus(sink)
-			time.Sleep(1 * time.Minute)
-		}
+	}
+	for {
+		updateStatus(sink)
+		time.Sleep(1 * time.Minute)
 	}
 }
 
