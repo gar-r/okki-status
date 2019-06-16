@@ -1,7 +1,6 @@
 package modules
 
 import (
-	"fmt"
 	"math"
 	"os/exec"
 	"strconv"
@@ -14,10 +13,6 @@ type Brightness struct {
 
 // Status provides the display brightness status
 func (b *Brightness) Status() string {
-	return fmt.Sprintf("%s%%", brightnessFn())
-}
-
-var brightnessFn = func() string {
 	out, err := exec.Command("brillo", "-G").Output()
 	if err != nil {
 		return "?"

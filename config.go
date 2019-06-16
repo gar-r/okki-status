@@ -13,6 +13,10 @@ var config = []entry{
 		format: "    %s   ",
 	},
 	{
+		module: &modules.RAM{},
+		format: "    %s   ",
+	},
+	{
 		module: &modules.Volume{},
 		format: "    %s   ",
 	},
@@ -21,8 +25,8 @@ var config = []entry{
 		format: "    %s   ",
 	},
 	{
-		module: &modules.Battery{Battery: "BAT0", Charging: " ()"},
-		format: "    %s   ",
+		module: &modules.Battery{Battery: "BAT0", Charging: " ", Discharging: " "},
+		format: "   %s   ",
 	},
 	{
 		module: &modules.Clock{Layout: "2006-01-02 15:04"},

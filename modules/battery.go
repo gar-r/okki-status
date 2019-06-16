@@ -12,32 +12,34 @@ type Battery struct {
 	// Name of the battery to query
 	Battery string
 
-	// Display string for charging status
+	// Display glyph for charging status
 	Charging string
+
+	// Display glyph for discharging status
+	Discharging string
 }
 
 // Status returns the battery status string
 func (b *Battery) Status() string {
-	return strings.Trim(fmt.Sprintf("%s%s",
-		b.capacity(), b.status()), " ")
+	return fmt.Sprintf("%s%s", b.status(), b.capacity())
 }
 
 func (b *Battery) capacity() string {
-	capacity := batteryFn(b.Battery, "capacity")
+	capacity := b.getInfo("capacity")
 	return fmt.Sprintf("%s%%", capacity)
 }
 
 func (b *Battery) status() string {
-	status := batteryFn(b.Battery, "status")
+	status := b.getInfo("status")
 	if status == "Charging" {
 		return b.Charging
 	}
-	return ""
+	return b.Discharging
 }
 
-var batteryFn = func(battery, attrib string) string {
+func (b *Battery) getInfo(attrib string) string {
 	const pathFormat = "/sys/class/power_supply/%s/%s"
-	path := fmt.Sprintf(pathFormat, battery, attrib)
+	path := fmt.Sprintf(pathFormat, b.Battery, attrib)
 	d, err := ioutil.ReadFile(path)
 	if err != nil {
 		log.Println("error while reading battery capacity", err)
