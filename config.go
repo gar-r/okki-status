@@ -10,7 +10,7 @@ type entry struct {
 var config = []entry{
 	{
 		module: &modules.Wifi{
-			Device: "wlp59s0",
+			Device: "wlp1s0",
 		},
 		format: "    %s   ",
 	},
