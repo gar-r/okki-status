@@ -9,7 +9,9 @@ type entry struct {
 
 var config = []entry{
 	{
-		module: &modules.Wifi{Device: "wlp59s0"},
+		module: &modules.Wifi{
+			Device: "wlp59s0",
+		},
 		format: "    %s   ",
 	},
 	{
@@ -25,7 +27,14 @@ var config = []entry{
 		format: "    %s   ",
 	},
 	{
-		module: &modules.Battery{Battery: "BAT0", Charging: " ", Discharging: " "},
+		module: &modules.Battery{
+			Battery: "BAT0",
+			StatusMap: map[string]string{
+				"Charging":    " ",
+				"Discharging": " ",
+				"Full":        " ",
+			},
+		},
 		format: "   %s   ",
 	},
 	{

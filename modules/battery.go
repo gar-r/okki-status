@@ -12,11 +12,8 @@ type Battery struct {
 	// Name of the battery to query
 	Battery string
 
-	// Display glyph for charging status
-	Charging string
-
-	// Display glyph for discharging status
-	Discharging string
+	// Maps different statuses to custom strings
+	StatusMap map[string]string
 }
 
 // Status returns the battery status string
@@ -31,10 +28,7 @@ func (b *Battery) capacity() string {
 
 func (b *Battery) status() string {
 	status := b.getInfo("status")
-	if status == "Charging" {
-		return b.Charging
-	}
-	return b.Discharging
+	return b.StatusMap[status]
 }
 
 func (b *Battery) getInfo(attrib string) string {
