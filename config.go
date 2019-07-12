@@ -31,7 +31,7 @@ var config = []entry{
 			Battery: "BAT0",
 			StatusMap: map[string]string{
 				"Charging":    " ",
-				"Discharging": " ",
+				"Discharging": " ",
 				"Full":        " ",
 			},
 		},
