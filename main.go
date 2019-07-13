@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"os"
 	"os/exec"
 	"strings"
@@ -42,8 +41,8 @@ func execCommand() {
 
 func getStatus() string {
 	status := strings.Builder{}
-	for _, entry := range config {
-		status.WriteString(fmt.Sprintf(entry.format, entry.module.Status()))
+	for _, module := range config {
+		status.WriteString(module.Status())
 	}
 	return status.String()
 }

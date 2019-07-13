@@ -9,6 +9,8 @@ import (
 
 // Battery provides battery related status
 type Battery struct {
+	Margin
+
 	// Name of the battery to query
 	Battery string
 
@@ -18,7 +20,7 @@ type Battery struct {
 
 // Status returns the battery status string
 func (b *Battery) Status() string {
-	return fmt.Sprintf("%s%s", b.status(), b.capacity())
+	return b.Format(fmt.Sprintf("%s %s", b.status(), b.capacity()))
 }
 
 func (b *Battery) capacity() string {

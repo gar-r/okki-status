@@ -10,10 +10,17 @@ import (
 
 // RAM module provides information on RAM usage
 type RAM struct {
+	Margin
+	Icon
 }
 
 // Status returns the memory status
 func (r *RAM) Status() string {
+	v := r.getValue()
+	return r.Margin.Format(r.Icon.Format(v))
+}
+
+func (r *RAM) getValue() string {
 	raw, err := r.getInfo()
 	const errValue = ":("
 	if err != nil {
@@ -29,7 +36,7 @@ func (r *RAM) Status() string {
 		if err != nil {
 			return errValue
 		}
-		percentUsed := math.Round(used/total * 100)
+		percentUsed := math.Round(used / total * 100)
 		return fmt.Sprintf("%.0f%%", percentUsed)
 	}
 	return errValue

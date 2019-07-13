@@ -1,9 +1,13 @@
 package modules
 
-import "time"
+import (
+	"time"
+)
 
 // Clock provides date/time status in a given Layout
 type Clock struct {
+	Margin
+	Icon
 	Layout string
 }
 
@@ -12,5 +16,6 @@ func (c *Clock) Status() string {
 	if c.Layout == "" {
 		c.Layout = time.ANSIC
 	}
-	return time.Now().Format(c.Layout)
+	clock := time.Now().Format(c.Layout)
+	return c.Margin.Format(c.Icon.Format(clock))
 }
