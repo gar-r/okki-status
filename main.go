@@ -1,75 +1,66 @@
 package main
 
 import (
-	"os"
-	"os/exec"
-	"strings"
-	"time"
-
+	"bitbucket.org/dargzero/smart-status/core"
 	"bitbucket.org/dargzero/smart-status/output"
+	"flag"
+	"strings"
 )
 
-var debugMode bool
-var command string
-var args []string
+var debug bool
+var single bool
+
+var sink output.Sink
+var cache map[core.Module]string
 
 func main() {
-	readArgs()
-	sink := initSink()
-	if command != "" {
-		execCommand()
-		updateStatus(sink)
+	parseFlags()
+	initialize()
+	emit()
+	if single {
 		return
 	}
-	for {
-		updateStatus(sink)
-		time.Sleep(1 * time.Minute)
+	listen()
+}
+
+func listen() {
+	ch := make(chan core.Message)
+	for _, entry := range config {
+		entry.Schedule(ch)
+	}
+	for msg := range ch {
+		cache[msg.M] = msg.S
+		emit()
 	}
 }
 
-func updateStatus(sink output.Sink) {
-	status := getStatus()
-	sink.Accept(status)
-}
-
-func execCommand() {
-	err := exec.Command(command, args...).Run()
-	if err != nil {
-		os.Exit(1)
-	}
-}
-
-func getStatus() string {
+func emit() {
 	status := strings.Builder{}
 	for _, entry := range config {
-		status.WriteString(entry.String())
+		s, present := cache[entry]
+		if !present {
+			info := entry.Info()
+			cache[entry] = info
+			status.WriteString(info)
+		} else {
+			status.WriteString(s)
+		}
+
 	}
-	return status.String()
+	sink.Accept(status.String())
 }
 
-func initSink() output.Sink {
-	var sink output.Sink
-	if debugMode {
+func initialize() {
+	if debug {
 		sink = &output.StdOut{}
 	} else {
 		sink = &output.Xroot{}
 	}
-	return sink
+	cache = make(map[core.Module]string, len(config))
 }
 
-func readArgs() {
-	for i, arg := range os.Args {
-		if i == 0 {
-			continue
-		}
-		if i == 1 {
-			if arg == "-d" || arg == "--debug" {
-				debugMode = true
-			} else {
-				command = arg
-			}
-		} else {
-			args = append(args, arg)
-		}
-	}
+func parseFlags() {
+	flag.BoolVar(&debug, "debug", false, "print to stdout instead of xroot")
+	flag.BoolVar(&single, "single", false, "refresh all modules and exit")
+	flag.Parse()
 }

@@ -2,6 +2,7 @@ package core
 
 import (
 	"strings"
+	"time"
 )
 
 type StatusProvider interface {
@@ -19,20 +20,39 @@ const (
 	TextFirst
 )
 
-type Block struct {
+type Module struct {
 	Gap            Gap
 	BlockOrder     BlockOrder
 	IconProvider   IconProvider
 	StatusProvider StatusProvider
+	Frequency      time.Duration
 }
 
-func (b *Block) String() string {
-	status := b.StatusProvider.GetStatus()
-	icon := b.IconProvider.GetIcon(status)
-	if b.BlockOrder == IconFirst {
-		return b.Gap.Format(icon, status)
+type Message struct {
+	M Module
+	S string
+}
+
+func (m Module) Schedule(ch chan Message) {
+	ticker := time.NewTicker(m.Frequency)
+	go func() {
+		for range ticker.C {
+			msg := Message{
+				M: m,
+				S: m.Info(),
+			}
+			ch <- msg
+		}
+	}()
+}
+
+func (m *Module) Info() string {
+	status := m.StatusProvider.GetStatus()
+	icon := m.IconProvider.GetIcon(status)
+	if m.BlockOrder == IconFirst {
+		return m.Gap.Format(icon, status)
 	}
-	return b.Gap.Format(status, icon)
+	return m.Gap.Format(status, icon)
 }
 
 type Gap struct {

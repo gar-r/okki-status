@@ -5,6 +5,7 @@ import (
 	"bitbucket.org/dargzero/smart-status/providers"
 	"strconv"
 	"strings"
+	"time"
 )
 
 var config = Config{
@@ -13,12 +14,14 @@ var config = Config{
 		IconProvider:   &core.StaticIcon{Icon: " "},
 		Gap:            defaultGap,
 		BlockOrder:     core.IconFirst,
+		Frequency:      5 * time.Second,
 	},
 	{
 		StatusProvider: &providers.RAM{},
 		IconProvider:   &core.StaticIcon{Icon: " "},
 		Gap:            defaultGap,
 		BlockOrder:     core.IconFirst,
+		Frequency:      3 * time.Second,
 	},
 	{
 		StatusProvider: &providers.Volume{},
@@ -31,6 +34,7 @@ var config = Config{
 		},
 		Gap:        defaultGap,
 		BlockOrder: core.IconFirst,
+		Frequency:  1 * time.Minute,
 	},
 	{
 		StatusProvider: &providers.Brightness{},
@@ -44,6 +48,7 @@ var config = Config{
 		},
 		Gap:        defaultGap,
 		BlockOrder: core.IconFirst,
+		Frequency:  1 * time.Minute,
 	},
 	{
 		StatusProvider: &providers.Battery{Battery: "BAT0"},
@@ -63,16 +68,18 @@ var config = Config{
 		},
 		Gap:        defaultGap,
 		BlockOrder: core.IconFirst,
+		Frequency:  3 * time.Second,
 	},
 	{
 		StatusProvider: &providers.Clock{Layout: "2006-01-02 15:04"},
 		IconProvider:   &core.StaticIcon{Icon: " "},
 		Gap:            defaultGap,
 		BlockOrder:     core.IconFirst,
+		Frequency:      1 * time.Minute,
 	},
 }
 
-type Config []core.Block
+type Config []core.Module
 
 var defaultGap = core.Gap{
 	Before: "   ",
