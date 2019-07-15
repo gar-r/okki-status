@@ -6,7 +6,7 @@ import (
 	"strings"
 	"time"
 
-	"bitbucket.org/dargzero/smart-status/sinks"
+	"bitbucket.org/dargzero/smart-status/output"
 )
 
 var debugMode bool
@@ -27,7 +27,7 @@ func main() {
 	}
 }
 
-func updateStatus(sink sinks.Sink) {
+func updateStatus(sink output.Sink) {
 	status := getStatus()
 	sink.Accept(status)
 }
@@ -41,18 +41,18 @@ func execCommand() {
 
 func getStatus() string {
 	status := strings.Builder{}
-	for _, module := range config {
-		status.WriteString(module.Status())
+	for _, entry := range config {
+		status.WriteString(entry.String())
 	}
 	return status.String()
 }
 
-func initSink() sinks.Sink {
-	var sink sinks.Sink
+func initSink() output.Sink {
+	var sink output.Sink
 	if debugMode {
-		sink = &sinks.StdOut{}
+		sink = &output.StdOut{}
 	} else {
-		sink = &sinks.Xroot{}
+		sink = &output.Xroot{}
 	}
 	return sink
 }

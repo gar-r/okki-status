@@ -1,4 +1,4 @@
-package modules
+package providers
 
 import (
 	"fmt"
@@ -8,19 +8,10 @@ import (
 	"strconv"
 )
 
-// RAM module provides information on RAM usage
 type RAM struct {
-	Margin
-	Icon
 }
 
-// Status returns the memory status
-func (r *RAM) Status() string {
-	v := r.getValue()
-	return r.Margin.Format(r.Icon.Format(v))
-}
-
-func (r *RAM) getValue() string {
+func (r *RAM) GetStatus() string {
 	raw, err := r.getInfo()
 	const errValue = ":("
 	if err != nil {

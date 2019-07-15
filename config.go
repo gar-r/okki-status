@@ -1,47 +1,88 @@
 package main
 
-import "bitbucket.org/dargzero/smart-status/modules"
+import (
+	"bitbucket.org/dargzero/smart-status/core"
+	"bitbucket.org/dargzero/smart-status/providers"
+	"strconv"
+	"strings"
+)
 
-var config = []modules.Module{
-	&modules.Wifi{
-		Device: "wlp1s0",
+var config = Config{
+	{
+		StatusProvider: &providers.Wifi{Device: "wlp1s0"},
+		IconProvider:   &core.StaticIcon{Icon: " "},
+		Gap:            defaultGap,
+		BlockOrder:     core.IconFirst,
 	},
-	&modules.RAM{
-		Margin: defaultMargin,
-		Icon:   iconWithGap(""),
+	{
+		StatusProvider: &providers.RAM{},
+		IconProvider:   &core.StaticIcon{Icon: " "},
+		Gap:            defaultGap,
+		BlockOrder:     core.IconFirst,
 	},
-	&modules.Volume{
-		Margin: defaultMargin,
-		Icon:   iconWithGap(""),
-	},
-	&modules.Brightness{
-		Margin: defaultMargin,
-		Icon:   iconWithGap(""),
-	},
-	&modules.Battery{
-		Battery: "BAT0",
-		StatusMap: map[string]string{
-			"Charging":    "",
-			"Discharging": "",
-			"Full":        "",
+	{
+		StatusProvider: &providers.Volume{},
+		IconProvider: &core.ThresholdIcon{
+			StatusConverterFn: valToPercent,
+			Thresholds: []core.Threshold{
+				{Value: 75, Icon: " "},
+				{Value: 0, Icon: " "},
+			},
 		},
-		Margin: defaultMargin,
+		Gap:        defaultGap,
+		BlockOrder: core.IconFirst,
 	},
-	&modules.Clock{
-		Layout: "2006-01-02 15:04",
-		Margin: defaultMargin,
-		Icon:   iconWithGap(""),
+	{
+		StatusProvider: &providers.Brightness{},
+		IconProvider: &core.ThresholdIcon{
+			StatusConverterFn: valToPercent,
+			Thresholds: []core.Threshold{
+				{Value: 50, Icon: " "},
+				{Value: 25, Icon: " "},
+				{Value: 0, Icon: " "},
+			},
+		},
+		Gap:        defaultGap,
+		BlockOrder: core.IconFirst,
+	},
+	{
+		StatusProvider: &providers.Battery{Battery: "BAT0"},
+		IconProvider: &providers.BatteryIconProvider{
+			Battery:  "BAT0",
+			Charging: " ",
+			ThresholdIcon: core.ThresholdIcon{
+				StatusConverterFn: valToPercent,
+				Thresholds: []core.Threshold{
+					{Value: 90, Icon: " "},
+					{Value: 60, Icon: " "},
+					{Value: 40, Icon: " "},
+					{Value: 10, Icon: " "},
+					{Value: 0, Icon: " "},
+				},
+			},
+		},
+		Gap:        defaultGap,
+		BlockOrder: core.IconFirst,
+	},
+	{
+		StatusProvider: &providers.Clock{Layout: "2006-01-02 15:04"},
+		IconProvider:   &core.StaticIcon{Icon: " "},
+		Gap:            defaultGap,
+		BlockOrder:     core.IconFirst,
 	},
 }
 
-var defaultMargin = modules.Margin{
-	Left:  "   ",
-	Right: "   ",
+type Config []core.Block
+
+var defaultGap = core.Gap{
+	Before: "   ",
+	After:  "   ",
 }
 
-func iconWithGap(icon string) modules.Icon {
-	return modules.Icon{
-		Icon:      icon,
-		Separator: " ",
+func valToPercent(value string) int {
+	percent, err := strconv.Atoi(strings.Replace(value, "%", "", 1))
+	if err != nil {
+		return -1
 	}
+	return percent
 }

@@ -1,4 +1,4 @@
-package modules
+package providers
 
 import (
 	"fmt"
@@ -6,20 +6,11 @@ import (
 	"regexp"
 )
 
-// Wifi provides Wifi related information
 type Wifi struct {
-	Margin
-	Icon
 	Device string
 }
 
-// Status returns network name and signal strength
-func (w *Wifi) Status() string {
-	val := w.getValue()
-	return w.Margin.Format(w.Icon.Format(val))
-}
-
-func (w *Wifi) getValue() string {
+func (w *Wifi) GetStatus() string {
 	info := w.getInfo()
 	if info == nil {
 		return ":("
