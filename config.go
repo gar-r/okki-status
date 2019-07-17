@@ -8,24 +8,29 @@ import (
 	"time"
 )
 
+var addr = ":12650"
+
 var config = Config{
 	{
-		StatusProvider: &providers.Wifi{Device: "wlp1s0"},
-		IconProvider:   &core.StaticIcon{Icon: " "},
-		Gap:            defaultGap,
-		BlockOrder:     core.IconFirst,
-		Frequency:      5 * time.Second,
+		Name:       "wifi",
+		Status:     &providers.Wifi{Device: "wlp1s0"},
+		Icon:       &core.StaticIcon{Icon: " "},
+		Gap:        defaultGap,
+		BlockOrder: core.IconFirst,
+		Refresh:    5 * time.Second,
 	},
 	{
-		StatusProvider: &providers.RAM{},
-		IconProvider:   &core.StaticIcon{Icon: " "},
-		Gap:            defaultGap,
-		BlockOrder:     core.IconFirst,
-		Frequency:      3 * time.Second,
+		Name:       "ram",
+		Status:     &providers.RAM{},
+		Icon:       &core.StaticIcon{Icon: " "},
+		Gap:        defaultGap,
+		BlockOrder: core.IconFirst,
+		Refresh:    3 * time.Second,
 	},
 	{
-		StatusProvider: &providers.Volume{},
-		IconProvider: &core.ThresholdIcon{
+		Name:   "volume",
+		Status: &providers.Volume{},
+		Icon: &core.ThresholdIcon{
 			StatusConverterFn: valToPercent,
 			Thresholds: []core.Threshold{
 				{Value: 75, Icon: " "},
@@ -34,11 +39,12 @@ var config = Config{
 		},
 		Gap:        defaultGap,
 		BlockOrder: core.IconFirst,
-		Frequency:  1 * time.Minute,
+		Refresh:    1 * time.Minute,
 	},
 	{
-		StatusProvider: &providers.Brightness{},
-		IconProvider: &core.ThresholdIcon{
+		Name:   "brightness",
+		Status: &providers.Brightness{},
+		Icon: &core.ThresholdIcon{
 			StatusConverterFn: valToPercent,
 			Thresholds: []core.Threshold{
 				{Value: 50, Icon: " "},
@@ -48,11 +54,12 @@ var config = Config{
 		},
 		Gap:        defaultGap,
 		BlockOrder: core.IconFirst,
-		Frequency:  1 * time.Minute,
+		Refresh:    1 * time.Minute,
 	},
 	{
-		StatusProvider: &providers.Battery{Battery: "BAT0"},
-		IconProvider: &providers.BatteryIconProvider{
+		Name:   "battery",
+		Status: &providers.Battery{Battery: "BAT0"},
+		Icon: &providers.BatteryIconProvider{
 			Battery:  "BAT0",
 			Charging: " ",
 			ThresholdIcon: core.ThresholdIcon{
@@ -68,14 +75,15 @@ var config = Config{
 		},
 		Gap:        defaultGap,
 		BlockOrder: core.IconFirst,
-		Frequency:  3 * time.Second,
+		Refresh:    10 * time.Second,
 	},
 	{
-		StatusProvider: &providers.Clock{Layout: "2006-01-02 15:04"},
-		IconProvider:   &core.StaticIcon{Icon: " "},
-		Gap:            defaultGap,
-		BlockOrder:     core.IconFirst,
-		Frequency:      1 * time.Minute,
+		Name:       "clock",
+		Status:     &providers.Clock{Layout: "2006-01-02 15:04"},
+		Icon:       &core.StaticIcon{Icon: " "},
+		Gap:        defaultGap,
+		BlockOrder: core.IconFirst,
+		Refresh:    1 * time.Minute,
 	},
 }
 

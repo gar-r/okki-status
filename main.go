@@ -8,44 +8,53 @@ import (
 )
 
 var debug bool
-var single bool
 
 var sink output.Sink
-var cache map[core.Module]string
+var refresh string
+var cache map[*core.Module]string
 
 func main() {
 	parseFlags()
 	initialize()
-	emit()
-	if single {
+	if refresh != "" {
+		sendRefreshRequest(refresh)
 		return
 	}
-	listen()
+	invalidateAll()
+	go handleModuleRefresh()
+	startServer()
 }
 
-func listen() {
-	ch := make(chan core.Message)
-	for _, entry := range config {
-		entry.Schedule(ch)
+func handleModuleRefresh() {
+	ch := make(chan core.Module)
+	for _, module := range config {
+		module.Schedule(ch)
 	}
-	for msg := range ch {
-		cache[msg.M] = msg.S
-		emit()
+	for module := range ch {
+		invalidate(&module)
 	}
 }
 
-func emit() {
+func invalidate(module *core.Module) {
+	cache[module] = module.Info()
+	updateBar()
+}
+
+func invalidateAll() {
+	for _, module := range config {
+		cache[&module] = module.Info()
+	}
+	updateBar()
+}
+
+func updateBar() {
 	status := strings.Builder{}
 	for _, entry := range config {
-		s, present := cache[entry]
+		_, present := cache[&entry]
 		if !present {
-			info := entry.Info()
-			cache[entry] = info
-			status.WriteString(info)
-		} else {
-			status.WriteString(s)
+			cache[&entry] = entry.Info()
 		}
-
+		status.WriteString(cache[&entry])
 	}
 	sink.Accept(status.String())
 }
@@ -56,11 +65,11 @@ func initialize() {
 	} else {
 		sink = &output.Xroot{}
 	}
-	cache = make(map[core.Module]string, len(config))
+	cache = make(map[*core.Module]string, len(config))
 }
 
 func parseFlags() {
 	flag.BoolVar(&debug, "debug", false, "print to stdout instead of xroot")
-	flag.BoolVar(&single, "single", false, "refresh all modules and exit")
+	flag.StringVar(&refresh, "refresh", "", "refresh a single module with the give name")
 	flag.Parse()
 }

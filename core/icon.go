@@ -1,5 +1,9 @@
 package core
 
+type IconProvider interface {
+	GetIcon(status string) string
+}
+
 type StaticIcon struct {
 	Icon string
 }
