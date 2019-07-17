@@ -95,38 +95,16 @@ will force the brightness module to refresh its status, and thus the status bar 
 
 ### Binding multimedia keys
 
-A typical example setup for immediately updating multimedia keys will involve using a helper script:
+A typical example setup for immediately updating multimedia keys will involve using `SHCMD` to follow up the bound command with `smart-status --refresh=x`.
 
-```
-## dwm-bar-helper.sh
-
-#!/bin/sh
-eval $2
-smart-status --refresh=$1
-```
-
-A bit more sophisticated version of the helper script can be found in the source folder. You can install it by executing:
-
-```
-cp dwm-bar-helper.sh /usr/local/bin
-```
-
-Using the above helper you can now increase display brightness and refresh the status bar in one go: 
-
-```
-dwm-bar-helper.sh "brightness" "brillo -A 10"
-```
-
-The only step remaining is to bind this script to the appropriate key in your dwm config file:
 
 ```
 ## config.h (dwm sources)
 
 [...]
 
-static const char *brup[] = { "dwm-bar-helper.sh", "brightness", "brillo -A 10", NULL };
 static Key keys[] = {
-   { 0, XF86XK_MonBrightnessUp, spawn, {.v = brup } },
+   { 0, XF86XK_MonBrightnessUp, spawn, SHCMD("some-command; smart-status --refresh=x") },
 }
 
 [...]
