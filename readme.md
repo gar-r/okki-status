@@ -4,7 +4,7 @@
 Smart-status is a simple status bar for [dwm](http://dwm.suckless.org/) written in go.
 Here is a screen shot of it in action:
 
-![screenshot](screenshot.png "screen shot of dwm bar" =800x) 
+![screenshot](screenshot.png "screen shot of dwm desktop with smart-status") 
 
 ## Installation
 
