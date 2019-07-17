@@ -75,7 +75,7 @@ var config = Config{
 		},
 		Gap:        defaultGap,
 		BlockOrder: core.IconFirst,
-		Refresh:    10 * time.Second,
+		Refresh:    5 * time.Second,
 	},
 	{
 		Name:       "clock",
