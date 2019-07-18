@@ -1,7 +1,7 @@
 package providers
 
 import (
-	"bitbucket.org/dargzero/smart-status/core"
+	"bitbucket.org/dargzero/okki-status/core"
 	"fmt"
 	"io/ioutil"
 	"log"

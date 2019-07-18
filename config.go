@@ -1,8 +1,8 @@
 package main
 
 import (
-	"bitbucket.org/dargzero/smart-status/core"
-	"bitbucket.org/dargzero/smart-status/providers"
+	"bitbucket.org/dargzero/okki-status/core"
+	"bitbucket.org/dargzero/okki-status/providers"
 	"strconv"
 	"strings"
 	"time"

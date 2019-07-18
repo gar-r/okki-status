@@ -1,8 +1,8 @@
 package main
 
 import (
-	"bitbucket.org/dargzero/smart-status/core"
-	"bitbucket.org/dargzero/smart-status/output"
+	"bitbucket.org/dargzero/okki-status/core"
+	"bitbucket.org/dargzero/okki-status/output"
 	"flag"
 	"log"
 	"strings"

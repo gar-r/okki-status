@@ -1,7 +1,7 @@
 package main
 
 import (
-	"bitbucket.org/dargzero/smart-status/core"
+	"bitbucket.org/dargzero/okki-status/core"
 	"errors"
 	"log"
 	"net/http"
