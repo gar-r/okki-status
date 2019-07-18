@@ -26,6 +26,8 @@ Other modules work fine without external dependencies.
 
 ### Building the binary
 
+Make sure, that you have go (version 1.12 or above) installed on your system.
+
 1.  clone or download the source code
 1.  switch to the source directory
 1.  run `go build`
