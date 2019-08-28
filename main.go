@@ -6,6 +6,7 @@ import (
 	"flag"
 	"log"
 	"strings"
+	"time"
 )
 
 var debug bool
@@ -26,7 +27,11 @@ func main() {
 	}
 	invalidateAll()
 	go handleModuleRefresh()
-	startServer()
+	if debug {
+		time.Sleep(1 * time.Minute)
+	} else {
+		startServer()
+	}
 }
 
 func handleModuleRefresh() {
