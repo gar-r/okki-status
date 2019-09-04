@@ -1,12 +1,13 @@
 package main
 
 import (
-	"bitbucket.org/dargzero/okki-status/core"
-	"bitbucket.org/dargzero/okki-status/output"
 	"flag"
 	"log"
 	"strings"
 	"time"
+
+	"bitbucket.org/dargzero/okki-status/core"
+	"bitbucket.org/dargzero/okki-status/output"
 )
 
 var debug bool
@@ -72,7 +73,7 @@ func initialize() {
 	if debug {
 		sink = &output.StdOut{}
 	} else {
-		sink = &output.Xroot{}
+		sink = &output.XRoot{}
 	}
 	cache = make(map[core.Module]string, len(config))
 }

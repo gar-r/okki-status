@@ -5,9 +5,11 @@ import (
 	"strings"
 )
 
+// Volume provides system volume related information
 type Volume struct {
 }
 
+// GetStatus returns the primary device volume in percentage, or the muted string
 func (v *Volume) GetStatus() string {
 	out, err := exec.Command("pamixer", "--get-volume-human").Output()
 	volStr := strings.Trim(string(out), "\n")

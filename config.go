@@ -1,19 +1,20 @@
 package main
 
 import (
-	"bitbucket.org/dargzero/okki-status/core"
-	"bitbucket.org/dargzero/okki-status/providers"
 	"strconv"
 	"strings"
 	"time"
+
+	"bitbucket.org/dargzero/okki-status/core"
+	"bitbucket.org/dargzero/okki-status/providers"
 )
 
 var addr = ":12650"
 
 var config = Config{
 	{
-		Name:       "wifi",
-		Status:     &providers.Wifi{Device: "wlp1s0"},
+		Name:       "wiFi",
+		Status:     &providers.WiFi{Device: "wlp1s0"},
 		Icon:       &core.StaticIcon{Icon: " "},
 		Gap:        defaultGap,
 		BlockOrder: core.IconFirst,
@@ -87,6 +88,7 @@ var config = Config{
 	},
 }
 
+// Config is composed of an arbitrary number of modules
 type Config []core.Module
 
 var defaultGap = core.Gap{

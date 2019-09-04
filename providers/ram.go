@@ -8,9 +8,11 @@ import (
 	"strconv"
 )
 
+// RAM provides system memory related information
 type RAM struct {
 }
 
+// GetStatus returns the used system memory percentage
 func (r *RAM) GetStatus() string {
 	raw, err := r.getInfo()
 	const errValue = ":("

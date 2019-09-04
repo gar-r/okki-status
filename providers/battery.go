@@ -1,32 +1,34 @@
 package providers
 
 import (
-	"bitbucket.org/dargzero/okki-status/core"
 	"fmt"
 	"io/ioutil"
 	"log"
 	"strings"
+
+	"bitbucket.org/dargzero/okki-status/core"
 )
 
+// Battery provides status information for a single battery device
 type Battery struct {
-	// Name of the battery to query
-	Battery string
+	Battery string // name of the battery to query
 }
 
+// GetStatus returns a string with the battery capacity percentage
 func (b *Battery) GetStatus() string {
 	percent := batteryInfo(b.Battery, "capacity")
 	return fmt.Sprintf("%s%%", percent)
 }
 
+// BatteryIconProvider provides a state-aware battery icon
 type BatteryIconProvider struct {
 	core.ThresholdIcon
 
-	// Name of the battery to query
-	Battery string
-
+	Battery  string // name of the battery to query
 	Charging string
 }
 
+// GetIcon returns different icons depending of charging/discharging state and percentage
 func (b *BatteryIconProvider) GetIcon(status string) string {
 	state := batteryInfo(b.Battery, "status")
 	if state == "Charging" {

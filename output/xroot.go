@@ -5,12 +5,12 @@ import (
 	"os/exec"
 )
 
-//Xroot is a sink that sets the status on the X root window
-type Xroot struct {
+//XRoot is a sink that sets the status on the X root window
+type XRoot struct {
 }
 
-// Accept acceps the status information
-func (*Xroot) Accept(status string) {
+// Accept accepts the status information
+func (*XRoot) Accept(status string) {
 	err := exec.Command("xsetroot", "-name", status).Run()
 	if err != nil {
 		log.Println(err)

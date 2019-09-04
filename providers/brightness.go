@@ -7,9 +7,11 @@ import (
 	"strings"
 )
 
+// Brightness provides screen brightness information
 type Brightness struct {
 }
 
+// GetStatus returns the display brightness in percentage
 func (b *Brightness) GetStatus() string {
 	out, err := exec.Command("brillo", "-G").Output()
 	if err != nil {
