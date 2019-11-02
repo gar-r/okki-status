@@ -15,7 +15,7 @@ var config = Config{
 	{
 		Name:       "wiFi",
 		Status:     &providers.WiFi{Device: "wlp1s0"},
-		Icon:       &core.StaticIcon{Icon: " "},
+		Icon:       &core.StaticIcon{Icon: "  "},
 		Gap:        defaultGap,
 		BlockOrder: core.IconFirst,
 		Refresh:    5 * time.Second,
@@ -23,7 +23,7 @@ var config = Config{
 	{
 		Name:       "ram",
 		Status:     &providers.RAM{},
-		Icon:       &core.StaticIcon{Icon: " "},
+		Icon:       &core.StaticIcon{Icon: "  "},
 		Gap:        defaultGap,
 		BlockOrder: core.IconFirst,
 		Refresh:    3 * time.Second,
@@ -34,8 +34,8 @@ var config = Config{
 		Icon: &core.ThresholdIcon{
 			StatusConverterFn: valToPercent,
 			Thresholds: []core.Threshold{
-				{Value: 75, Icon: " "},
-				{Value: 0, Icon: " "},
+				{Value: 75, Icon: "  "},
+				{Value: 0, Icon: "  "},
 			},
 		},
 		Gap:        defaultGap,
@@ -48,9 +48,9 @@ var config = Config{
 		Icon: &core.ThresholdIcon{
 			StatusConverterFn: valToPercent,
 			Thresholds: []core.Threshold{
-				{Value: 50, Icon: " "},
-				{Value: 25, Icon: " "},
-				{Value: 0, Icon: " "},
+				{Value: 50, Icon: "  "},
+				{Value: 25, Icon: "  "},
+				{Value: 0, Icon: "  "},
 			},
 		},
 		Gap:        defaultGap,
@@ -62,15 +62,15 @@ var config = Config{
 		Status: &providers.Battery{Battery: "BAT0"},
 		Icon: &providers.BatteryIconProvider{
 			Battery:  "BAT0",
-			Charging: " ",
+			Charging: "  ",
 			ThresholdIcon: core.ThresholdIcon{
 				StatusConverterFn: valToPercent,
 				Thresholds: []core.Threshold{
-					{Value: 90, Icon: " "},
-					{Value: 60, Icon: " "},
-					{Value: 40, Icon: " "},
-					{Value: 10, Icon: " "},
-					{Value: 0, Icon: " "},
+					{Value: 90, Icon: "  "},
+					{Value: 60, Icon: "  "},
+					{Value: 40, Icon: "  "},
+					{Value: 10, Icon: "  "},
+					{Value: 0, Icon: "  "},
 				},
 			},
 		},
@@ -79,9 +79,17 @@ var config = Config{
 		Refresh:    5 * time.Second,
 	},
 	{
+		Name:       "layout",
+		Status:     &providers.Layout{},
+		Icon:       &core.StaticIcon{Icon: "  "},
+		Gap:        defaultGap,
+		BlockOrder: core.IconFirst,
+		Refresh:    1 * time.Hour,
+	},
+	{
 		Name:       "clock",
 		Status:     &providers.Clock{Layout: "2006-01-02 15:04"},
-		Icon:       &core.StaticIcon{Icon: " "},
+		Icon:       &core.StaticIcon{Icon: "  "},
 		Gap:        defaultGap,
 		BlockOrder: core.IconFirst,
 		Refresh:    1 * time.Minute,
