@@ -6,6 +6,9 @@ import (
 	"regexp"
 )
 
+var ssidRe = regexp.MustCompile(`SSID:\s+(.*)`)
+var signalRe = regexp.MustCompile(`signal:\s+(.*)`)
+
 // WiFi provides wireless network information for the given device
 type WiFi struct {
 	Device string
@@ -29,13 +32,11 @@ func (w *WiFi) GetStatus() string {
 }
 
 func (w *WiFi) ssid(info []byte) string {
-	var re = regexp.MustCompile(`SSID:\s+(.*)`)
-	return w.findFirst(info, re)
+	return w.findFirst(info, ssidRe)
 }
 
 func (w *WiFi) signal(info []byte) string {
-	var re = regexp.MustCompile(`signal:\s+(.*)`)
-	return w.findFirst(info, re)
+	return w.findFirst(info, signalRe)
 }
 
 func (w *WiFi) findFirst(info []byte, re *regexp.Regexp) string {
