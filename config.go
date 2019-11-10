@@ -26,7 +26,7 @@ var config = Config{
 		Icon:       &core.StaticIcon{Icon: "  "},
 		Gap:        defaultGap,
 		BlockOrder: core.IconFirst,
-		Refresh:    3 * time.Second,
+		Refresh:    15 * time.Second,
 	},
 	{
 		Name:   "volume",
@@ -76,7 +76,7 @@ var config = Config{
 		},
 		Gap:        defaultGap,
 		BlockOrder: core.IconFirst,
-		Refresh:    5 * time.Second,
+		Refresh:    15 * time.Second,
 	},
 	{
 		Name:       "layout",

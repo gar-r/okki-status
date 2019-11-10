@@ -36,11 +36,11 @@ func main() {
 }
 
 func handleModuleRefresh() {
-	ch := make(chan core.Module)
+	events := make(chan core.Module, 100)
 	for _, module := range config {
-		module.Schedule(ch)
+		module.Schedule(events)
 	}
-	for module := range ch {
+	for module := range events {
 		invalidate(module)
 	}
 }
