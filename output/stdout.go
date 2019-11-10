@@ -2,7 +2,6 @@ package output
 
 import (
 	"fmt"
-	"time"
 )
 
 // StdOut is a sink that sends information to STDOUT
@@ -12,7 +11,7 @@ type StdOut struct {
 
 // Accept accepts the status string
 func (s *StdOut) Accept(status string) {
-	s.d.debounce(1*time.Second, func() {
+	s.d.invoke(func() {
 		fmt.Println(status)
 	})
 }
