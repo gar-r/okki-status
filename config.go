@@ -14,7 +14,7 @@ var addr = ":12650"
 var config = Config{
 	{
 		Name:       "wiFi",
-		Status:     &providers.WiFi{Device: "wlp1s0"},
+		Status:     &providers.WiFi{Device: "wlp0s20f3"},
 		Icon:       &core.StaticIcon{Icon: "  "},
 		Gap:        defaultGap,
 		BlockOrder: core.IconFirst,
@@ -59,9 +59,9 @@ var config = Config{
 	},
 	{
 		Name:   "battery",
-		Status: &providers.Battery{Battery: "BAT0"},
+		Status: &providers.Battery{Battery: "BAT1"},
 		Icon: &providers.BatteryIconProvider{
-			Battery:  "BAT0",
+			Battery:  "BAT1",
 			Charging: "  ",
 			ThresholdIcon: core.ThresholdIcon{
 				StatusConverterFn: valToPercent,
