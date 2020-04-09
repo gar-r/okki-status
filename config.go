@@ -13,6 +13,14 @@ var addr = ":12650"
 
 var config = Config{
 	{
+		Name:       "updates",
+		Status:     &providers.Updates{},
+		Icon:       &core.StaticIcon{Icon: "🗘  "},
+		Gap:        defaultGap,
+		BlockOrder: core.IconFirst,
+		Refresh:    4 * time.Hour,
+	},
+	{
 		Name:       "wiFi",
 		Status:     &providers.WiFi{Device: "wlp0s20f3"},
 		Icon:       &core.StaticIcon{Icon: "  "},

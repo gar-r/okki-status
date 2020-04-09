@@ -4,7 +4,7 @@
 okki-status is a simple status bar for [dwm](http://dwm.suckless.org/) written in go.
 Here is a screen shot of it in action:
 
-![screenshot](screenshot.png "screen shot of dwm desktop with okki-status") 
+![screenshot](screenshot.png "screen shot of dwm desktop with okki-status")
 
 ## Installation
 
@@ -31,6 +31,7 @@ Some built-in modules depend on external tools which need to be available on you
 *  `brightness` module depends on `brillo`
 *  `volume` module depends on `pamixer`
 *  `wifi` module depends on `iw`
+*  `updates` depends on yay (Arch Linux only)
 
 Other modules work fine without external dependencies.
 
@@ -50,7 +51,7 @@ To start it in debug mode add the `--debug` command line argument:
 
 ```
 okki-status --debug
-```    
+```
 
 ### Modifying the default config
 
@@ -59,15 +60,15 @@ A fully fleshed out example is provided out of the box, which you can modify acc
 
 *  deleting a module from the config slice
 *  modifying the name of a module
-*  modifying module specific properties (for example device names for wifi or battery)  
+*  modifying module specific properties (for example device names for wifi or battery)
 *  personalizing the icon:
     *  using a static icon
     *  using a dynamic icon which changes based on certain thresholds of the value of the module it belongs to
     *  implement a custom icon (advanced, look at `BatteryIconProvider` as an example)
 *  modifying the "block order" (the order in which the text and icon appears)
 *  modifying the refresh rate of the module (higher rate might cause bigger load on the CPU)
-  
-  
+
+
 The following table summarizes the built-in modules:
 
 | Module           | Description                                               | Special parameters  |
@@ -77,10 +78,11 @@ The following table summarizes the built-in modules:
 | volume           | volume level or muted state                               |                     |
 | brightness       | display brightness percent                                |                     |
 | battery          | remaining battery percent and charging state              | battery device name |
-| clock            | current date/time                                         | layout              | 
-     
+| clock            | current date/time                                         | layout              |
+| updates          | displays the number of available updates                  |                     |
+
 _Note_: the **Name** and **Refresh** parameters are mandatory for each module, even though they are not displayed in the above table.
- 
+
 ## Advanced
 
 ### Implementing a custom module
@@ -91,7 +93,7 @@ This requires go programming skills. In order to implement a custom module:
 1.  Add a new module instance to the config slice in `config.go` and set its `Status` field to your `StatusProvider` implementation from the previous step
 1.  Specify all remaining required attributes for the module.
 1.  Recompile and test with `--debug`
- 
+
 ### Reacting to external events
 
 In some cases it is not efficient for the module to continuously poll the system for status updates, but we still want to react promptly to external events.
