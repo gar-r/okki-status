@@ -16,6 +16,15 @@ func (u *Updates) GetStatus() string {
 	if err != nil {
 		return "?"
 	}
-	n := len(strings.Split(string(out), "\n"))
-	return strconv.Itoa(n)
+	count := countUpdates(string(out))
+	return strconv.Itoa(count)
+}
+
+func countUpdates(s string) (count int) {
+	for _, line := range strings.Split(s, "\n") {
+		if len(strings.TrimSpace(line)) > 0 {
+			count++
+		}
+	}
+	return
 }
