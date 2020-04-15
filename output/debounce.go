@@ -9,17 +9,17 @@ import (
 type State int
 
 const (
-	// IDLE State means, that the debouncer is idle
-	IDLE State = iota
+	// Idle State means, that the debouncer is idle
+	Idle State = iota
 
-	// INITIAL State means, that the debouncer is not started yet
-	INITIAL
+	// Initial State means, that the debouncer is not started yet
+	Initial
 
-	// DEBOUNCE State means, that the debouncer is currently suppressing events
-	DEBOUNCE
+	// Debounce State means, that the debouncer is currently suppressing events
+	Debounce
 )
 
-const interval = 100 * time.Millisecond
+const interval = 1 * time.Second
 
 type debouncer struct {
 	state  State
@@ -33,14 +33,14 @@ func (d *debouncer) invoke(f func()) {
 	defer d.lock.Unlock()
 	d.cached = f
 	switch d.state {
-	case IDLE:
-		d.state = INITIAL
+	case Idle:
+		d.state = Initial
 		d.startTimer()
 		d.flush()
-	case INITIAL:
-		d.state = DEBOUNCE
+	case Initial:
+		d.state = Debounce
 		d.timer.Reset(interval)
-	case DEBOUNCE:
+	case Debounce:
 		d.timer.Reset(interval)
 		d.cached = f
 	}
@@ -50,10 +50,10 @@ func (d *debouncer) timerElapsed() {
 	d.lock.Lock()
 	defer d.lock.Unlock()
 	switch d.state {
-	case INITIAL:
-		d.state = IDLE
-	case DEBOUNCE:
-		d.state = IDLE
+	case Initial:
+		d.state = Idle
+	case Debounce:
+		d.state = Idle
 		d.flush()
 	}
 }

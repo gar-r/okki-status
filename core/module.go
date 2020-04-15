@@ -12,6 +12,7 @@ type Module struct {
 	Icon       IconProvider
 	Status     StatusProvider
 	Refresh    time.Duration
+	Delay      time.Duration
 }
 
 // Info retrieves the and formats the status bar information

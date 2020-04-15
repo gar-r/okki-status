@@ -15,10 +15,11 @@ var config = Config{
 	{
 		Name:       "updates",
 		Status:     &providers.Updates{},
-		Icon:       &core.StaticIcon{Icon: "🗘  "},
+		Icon:       &core.StaticIcon{Icon: "⟑  "},
 		Gap:        defaultGap,
 		BlockOrder: core.IconFirst,
-		Refresh:    4 * time.Hour,
+		Refresh:    10 * time.Minute,
+		Delay:      5 * time.Second,
 	},
 	{
 		Name:       "wiFi",
