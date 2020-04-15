@@ -1,11 +1,12 @@
 package main
 
 import (
-	"bitbucket.org/dargzero/okki-status/core"
 	"errors"
 	"log"
 	"net/http"
 	"strings"
+
+	"bitbucket.org/dargzero/okki-status/core"
 )
 
 func startServer() {

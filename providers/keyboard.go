@@ -7,9 +7,11 @@ import (
 
 var layoutRe = regexp.MustCompile(`.*layout:\s*([a-z]*)`)
 
+// Layout provides keyboard layout information
 type Layout struct {
 }
 
+// GetStatus returns the keyboard layout string
 func (l *Layout) GetStatus() string {
 	info, err := exec.Command("setxkbmap", "-query").Output()
 	if err != nil {

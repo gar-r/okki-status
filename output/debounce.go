@@ -5,11 +5,17 @@ import (
 	"time"
 )
 
+// State represents the current state in the state machine
 type State int
 
 const (
+	// IDLE State means, that the debouncer is idle
 	IDLE State = iota
+
+	// INITIAL State means, that the debouncer is not started yet
 	INITIAL
+
+	// DEBOUNCE State means, that the debouncer is currently suppressing events
 	DEBOUNCE
 )
 

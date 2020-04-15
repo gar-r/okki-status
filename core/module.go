@@ -4,6 +4,7 @@ import (
 	"time"
 )
 
+// Module represents a single module on the status bar
 type Module struct {
 	Name       string
 	Gap        Gap
@@ -13,6 +14,7 @@ type Module struct {
 	Refresh    time.Duration
 }
 
+// Info retrieves the and formats the status bar information
 func (m *Module) Info() string {
 	status := m.Status.GetStatus()
 	icon := m.Icon.GetIcon(status)
@@ -22,6 +24,7 @@ func (m *Module) Info() string {
 	return m.Gap.Format(status, icon)
 }
 
+// Schedule creates a ticker to refesh the module periodically
 func (m Module) Schedule(ch chan Module) {
 	ticker := time.NewTicker(m.Refresh)
 	go func() {
