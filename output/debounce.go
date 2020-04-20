@@ -19,7 +19,7 @@ const (
 	Debounce
 )
 
-const interval = 1 * time.Second
+const interval = 100 * time.Millisecond
 
 type debouncer struct {
 	state  State
