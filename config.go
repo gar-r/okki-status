@@ -14,12 +14,11 @@ var addr = ":12650"
 var config = Config{
 	{
 		Name:       "updates",
-		Status:     &providers.Updates{},
+		Status:     &providers.Updates{Command: "/usr/bin/checkupdates"},
 		Icon:       &core.StaticIcon{Icon: "⟑  "},
 		Gap:        defaultGap,
 		BlockOrder: core.IconFirst,
 		Refresh:    10 * time.Minute,
-		Delay:      5 * time.Second,
 	},
 	{
 		Name:       "wiFi",
@@ -41,7 +40,7 @@ var config = Config{
 		Name:   "volume",
 		Status: &providers.Volume{},
 		Icon: &core.ThresholdIcon{
-			StatusConverterFn: valToPercent,
+			StatusConverterFn: NtoI,
 			Thresholds: []core.Threshold{
 				{Value: 75, Icon: "  "},
 				{Value: 0, Icon: "  "},
@@ -55,7 +54,7 @@ var config = Config{
 		Name:   "brightness",
 		Status: &providers.Brightness{},
 		Icon: &core.ThresholdIcon{
-			StatusConverterFn: valToPercent,
+			StatusConverterFn: NtoI,
 			Thresholds: []core.Threshold{
 				{Value: 50, Icon: "  "},
 				{Value: 25, Icon: "  "},
@@ -73,7 +72,7 @@ var config = Config{
 			Battery:  "BAT1",
 			Charging: "  ",
 			ThresholdIcon: core.ThresholdIcon{
-				StatusConverterFn: valToPercent,
+				StatusConverterFn: NtoI,
 				Thresholds: []core.Threshold{
 					{Value: 90, Icon: "  "},
 					{Value: 60, Icon: "  "},
@@ -113,10 +112,12 @@ var defaultGap = core.Gap{
 	After:  "   ",
 }
 
-func valToPercent(value string) int {
-	percent, err := strconv.Atoi(strings.Replace(value, "%", "", 1))
+// NtoI converts a number-string to int - the number string can also
+// be a percentage. For example "45%"" will become the int value of 45.
+func NtoI(value string) int {
+	n, err := strconv.Atoi(strings.Replace(value, "%", "", 1))
 	if err != nil {
 		return -1
 	}
-	return percent
+	return n
 }

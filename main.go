@@ -26,7 +26,7 @@ func main() {
 		}
 		return
 	}
-	invalidateAllWithDelay()
+	invalidateAll()
 	go handleModuleRefresh()
 	if debug {
 		time.Sleep(1 * time.Minute)
@@ -46,16 +46,14 @@ func handleModuleRefresh() {
 }
 
 func invalidate(module core.Module) {
+	log.Printf("invalidating %s", module.Name)
 	cache[module] = module.Info()
 	updateBar()
 }
 
-func invalidateAllWithDelay() {
+func invalidateAll() {
 	for _, module := range config {
-		m := module
-		time.AfterFunc(module.Delay, func() {
-			invalidate(m)
-		})
+		invalidate(module)
 	}
 }
 
