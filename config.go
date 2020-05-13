@@ -13,8 +13,11 @@ var addr = ":12650"
 
 var config = Config{
 	{
-		Name:       "updates",
-		Status:     &providers.Updates{Command: "/usr/bin/checkupdates"},
+		Name: "updates",
+		Status: &providers.Updates{
+			Command:         "/usr/bin/checkupdates",
+			IgnoreExitError: true,
+		},
 		Icon:       &core.StaticIcon{Icon: "⟑  "},
 		Gap:        defaultGap,
 		BlockOrder: core.IconFirst,

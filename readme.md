@@ -71,15 +71,15 @@ A fully fleshed out example is provided out of the box, which you can modify acc
 
 The following table summarizes the built-in modules:
 
-| Module     | Description                                  | Special parameters                                        |
-| ---------- | -------------------------------------------- | --------------------------------------------------------- |
-| wifi       | connected network name and signal strength   | wifi device name                                          |
-| ram        | physical memory usage in percent             |                                                           |
-| volume     | volume level or muted state                  |                                                           |
-| brightness | display brightness percent                   |                                                           |
-| battery    | remaining battery percent and charging state | battery device name                                       |
-| clock      | current date/time                            | layout                                                    |
-| updates    | displays the number of available updates     | a command which returns updateable packages, one per line |
+| Module     | Description                                  | Special parameters                              |
+| ---------- | -------------------------------------------- | ----------------------------------------------- |
+| wifi       | connected network name and signal strength   | wifi device name                                |
+| ram        | physical memory usage in percent             |                                                 |
+| volume     | volume level or muted state                  |                                                 |
+| brightness | display brightness percent                   |                                                 |
+| battery    | remaining battery percent and charging state | battery device name                             |
+| clock      | current date/time                            | layout                                          |
+| updates    | displays the number of available updates     | command (must return one update per line), args |
 
 _Note_: the **Name** and **Refresh** parameters are mandatory for each module, even though they are not displayed in the above table.
 

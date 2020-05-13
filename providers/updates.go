@@ -13,12 +13,22 @@ type Updates struct {
 
 	// Arguments for the command
 	Args []string
+
+	// Non-zero exit codes are ignored
+	IgnoreExitError bool
 }
 
 // GetStatus returns the number of updates as string
 func (u *Updates) GetStatus() string {
 	out, err := exec.Command(u.Command, u.Args...).Output()
 	if err != nil {
+		if u.IgnoreExitError {
+			if exiterr, ok := err.(*exec.ExitError); ok {
+				if exiterr.ExitCode() == 2 {
+					return "0"
+				}
+			}
+		}
 		return "?"
 	}
 	count := countNonEmptyLines(string(out))
