@@ -23,10 +23,8 @@ func (u *Updates) GetStatus() string {
 	out, err := exec.Command(u.Command, u.Args...).Output()
 	if err != nil {
 		if u.IgnoreExitError {
-			if exiterr, ok := err.(*exec.ExitError); ok {
-				if exiterr.ExitCode() == 2 {
-					return "0"
-				}
+			if _, ok := err.(*exec.ExitError); ok {
+				return "0"
 			}
 		}
 		return "?"
