@@ -29,9 +29,12 @@ The status bar uses the `xsetroot` program from the `xorg-xsetroot` package to i
 
 Some built-in modules depend on external tools which need to be available on your system if you wish to enable them:
 
-- `brightness` module depends on `brillo`
-- `volume` module depends on `pamixer`
-- `wifi` module depends on `iw`
+| Module         | Dependencies                               |
+| -------------- | ------------------------------------------ |
+| brightness     | brillo (aur)                               |
+| volume         | pamixer                                    |
+| wifi           | iw                                         |
+| updates        | pacman-contrib                             |
 
 Other modules work fine without external dependencies.
 
