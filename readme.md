@@ -139,6 +139,7 @@ If you are using the `updates` module with `pacman`, you can set up a hook to re
 [Trigger]
 Operation=Upgrade
 Type=Package
+Target=*
 
 [Action]
 Exec=/usr/local/bin/okki-status --refresh=updates
