@@ -130,3 +130,17 @@ static Key keys[] = {
 
 All other multimedia keys can be configured in a similar fashion with the appropriate key-codes and module names.
 An example configuration can be seen here: [dwm config.h](https://bitbucket.org/dargzero/dotfiles/src/master/dwm/config.h)
+
+#### Pacman hook
+
+If you are using the `updates` module with `pacman`, you can set up a hook to refresh the module after each package upgrade:
+
+```
+[Trigger]
+Operation=Upgrade
+Type=Package
+
+[Action]
+Exec=/usr/local/bin/okki-status --refresh=updates
+When=PostTransaction
+```
