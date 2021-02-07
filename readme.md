@@ -2,7 +2,7 @@
 
 ## What is okki-status?
 
-okki-status is a simple status bar for [dwm](http://dwm.suckless.org/) written in go.
+okki-status is a simple status bar for [dwm](http://dwm.suckless.org/) written in Go.
 Here is a screen shot of it in action:
 
 ![screenshot](screenshot.png "screen shot of dwm desktop with okki-status")
@@ -11,16 +11,18 @@ Here is a screen shot of it in action:
 
 ### Building the binary
 
-Make sure, that you have go (version 1.12 or above) installed on your system.
+Make sure, that you have Go (version 1.15 or above) installed on your system.
 
-1.  clone or download the source code
-1.  switch to the source directory
-1.  run `go build`
+1. clone or download the source code
+2. switch to the source directory
+3. build: `make build`
+4. install: `make install`
 
-Optional: make the compiled binary available on your system globally - for example:
+Install will add the following binaries to your system:
 
 ```
-mv okki-status /usr/local/bin
+/usr/local/bin/okki-status
+/usr/local/bin/okki-refresh
 ```
 
 ### Dependencies
@@ -70,7 +72,7 @@ A fully fleshed out example is provided out of the box, which you can modify acc
   - using a dynamic icon which changes based on certain thresholds of the value of the module it belongs to
   - implement a custom icon (advanced, look at `BatteryIconProvider` as an example)
 - modifying the "block order" (the order in which the text and icon appears)
-- modifying the refresh rate of the module (higher rate might cause bigger load on the CPU)
+- modifying the refresh rate of the module (higher rate results in more system calls)
 
 The following table summarizes the built-in modules:
 
@@ -103,18 +105,18 @@ In some cases it is not efficient for the module to continuously poll the system
 
 Good examples for this are the **brightness** and **volume** modules. These values rarely change _by themselves_ so a relatively rare polling rate is sufficient. However when the user changes the volume or brightness manually, we want to update the status bar as promptly as possible.
 
-For this specific scenario alone exists the `--refresh=[module-name]` command line flag. For example let's assume we have a module with the name `brightness`. Calling the application with:
+For this specific scenario you can use the bundled `okki-refresh` binary, which can take one or more module names as command line argument, and will send an a signal to `okki-status` to immediately refresh them. For example, in order to refresh the modules `brightness` and `volume`, you would call `okki-refresh` with the following arguments:
 
 ```
-okki-status --refresh=brightness
+okki-refresh brightness volume
 ```
 
-will force the brightness module to refresh its status, and thus the status bar will also reflect the change.
+This will force the modules with matching _name_ to refresh immediately, and the status bar will also redraw them. Other modules will not refresh, avoiding unneccessary system calls.
 
 #### Binding multimedia keys
 
-A typical example setup for immediately updating the status bar after pressing multimedia keys will involve using `SHCMD` to follow up the bound command with `okki-status --refresh=module`.
-Continuing with the example in the previous section for brightness:
+A typical example setup for immediately updating the status bar after pressing multimedia keys will involve using `SHCMD` to follow up the bound command with `okki-refresh module_name`.
+Continuing with the example from the previous section using the standard dwm config:
 
 ```
 ## config.h (dwm source file)
@@ -122,7 +124,7 @@ Continuing with the example in the previous section for brightness:
 [...]
 
 static Key keys[] = {
-   { 0, XF86XK_MonBrightnessUp, spawn, SHCMD("brillo -A 10; okki-status --refresh=brightness") },
+   { 0, XF86XK_MonBrightnessUp, spawn, SHCMD("brillo -A 10; okki-refresh brightness") },
 }
 
 [...]
@@ -133,7 +135,7 @@ An example configuration can be seen here: [dwm config.h](https://bitbucket.org/
 
 #### Pacman hook
 
-If you are using the `updates` module with `pacman`, you can set up a hook to refresh the module after each package upgrade:
+If you are using the `updates` module with `pacman`, you can set up a hook to refresh the module after each package upgrade (on Arch: `/etc/pacman.d/hooks/okki-status.hook`):
 
 ```
 [Trigger]
@@ -142,6 +144,6 @@ Type=Package
 Target=*
 
 [Action]
-Exec=/usr/local/bin/okki-status --refresh=updates
+Exec=/usr/local/bin/okki-refresh updates
 When=PostTransaction
 ```
