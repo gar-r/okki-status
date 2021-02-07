@@ -2,7 +2,6 @@ package main
 
 import (
 	"flag"
-	"time"
 
 	"hu.okki.okki-status/core"
 	"hu.okki.okki-status/output"
@@ -19,7 +18,7 @@ func main() {
 	initSink()
 	go waitForEvents()
 	schedule()
-	initServer()
+	listenForExternal()
 }
 
 func parseFlags() {
@@ -46,13 +45,5 @@ func waitForEvents() {
 	for module := range events {
 		bar.Invalidate(module)
 		bar.Render(sink)
-	}
-}
-
-func initServer() {
-	if !debug {
-		listenForExternal()
-	} else {
-		time.Sleep(5 * time.Minute)
 	}
 }

@@ -59,6 +59,8 @@ To start it in debug mode add the `--debug` command line argument:
 okki-status --debug
 ```
 
+_Note_: only one instance of okki-status can run at the same time, so you will need to stop any running instances before starting in debug mode _including_ the instance started by your window manager.
+
 ### Modifying the default config
 
 Configuration is done by modifying the `config.go` file in the root level of the source folder, and rebuilding the application.
