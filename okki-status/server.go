@@ -21,6 +21,7 @@ func invalidateHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	bar.Invalidate(module)
+	bar.Render(sink)
 	w.WriteHeader(http.StatusOK)
 }
 
