@@ -6,7 +6,7 @@ import (
 	"log"
 	"strings"
 
-	"bitbucket.org/dargzero/okki-status/core"
+	"hu.okki.okki-status/core"
 )
 
 // Battery provides status information for a single battery device

@@ -6,10 +6,10 @@ import (
 	"net/http"
 	"strings"
 
-	"bitbucket.org/dargzero/okki-status/core"
+	"hu.okki.okki-status/core"
 )
 
-func startServer() {
+func listenForExternal() {
 	http.HandleFunc("/invalidate/", invalidateHandler)
 	log.Fatal(http.ListenAndServe(addr, nil))
 }
@@ -20,17 +20,21 @@ func invalidateHandler(w http.ResponseWriter, r *http.Request) {
 		w.WriteHeader(http.StatusNotFound)
 		return
 	}
-	invalidate(module)
+	bar.Invalidate(module)
 	w.WriteHeader(http.StatusOK)
 }
 
 func findModule(r *http.Request) (core.Module, error) {
-	idx := strings.LastIndex(r.URL.Path, "/")
-	name := r.URL.Path[idx+1 : len(r.URL.Path)]
-	for _, module := range config {
+	name := getName(r)
+	for _, module := range modules {
 		if module.Name == name {
 			return module, nil
 		}
 	}
 	return core.Module{}, errors.New("module not found: " + name)
+}
+
+func getName(r *http.Request) string {
+	idx := strings.LastIndex(r.URL.Path, "/")
+	return r.URL.Path[idx+1 : len(r.URL.Path)]
 }

@@ -1,6 +1,9 @@
 package core
 
-import "strings"
+import (
+	"strconv"
+	"strings"
+)
 
 // BlockOrder determines the order in which the text and icon is printed
 type BlockOrder int
@@ -27,4 +30,19 @@ func (g *Gap) Format(values ...string) string {
 	}
 	sb.WriteString(g.After)
 	return sb.String()
+}
+
+var DefaultGap = Gap{
+	Before: "   ",
+	After:  "   ",
+}
+
+// NtoI converts a number-string to int - the number string can also
+// be a percentage. For example "45%"" will become the int value of 45.
+func NtoI(value string) int {
+	n, err := strconv.Atoi(strings.Replace(value, "%", "", 1))
+	if err != nil {
+		return -1
+	}
+	return n
 }
