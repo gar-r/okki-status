@@ -4,11 +4,10 @@ import (
 	"flag"
 
 	"hu.okki.okki-status/core"
-	"hu.okki.okki-status/output"
 )
 
 var debug bool
-var sink output.Sink
+var outputFn func(string)
 
 var bar = core.NewBar(modules)
 var events = make(chan core.Module, 100)
@@ -28,11 +27,11 @@ func parseFlags() {
 
 func initSink() {
 	if debug {
-		sink = &output.StdOut{}
+		outputFn = stdout
 	} else {
-		sink = &output.XRoot{}
+		outputFn = xroot
 	}
-	bar.Render(sink)
+	bar.Render(outputFn)
 }
 
 func schedule() {
@@ -44,6 +43,6 @@ func schedule() {
 func waitForEvents() {
 	for module := range events {
 		bar.Invalidate(module)
-		bar.Render(sink)
+		bar.Render(outputFn)
 	}
 }

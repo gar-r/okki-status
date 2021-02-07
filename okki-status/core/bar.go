@@ -3,8 +3,6 @@ package core
 import (
 	"log"
 	"strings"
-
-	"hu.okki.okki-status/output"
 )
 
 // Bar is composed of an arbitrary number of modules
@@ -20,12 +18,12 @@ func NewBar(modules []Module) *Bar {
 	}
 }
 
-func (b *Bar) Render(sink output.Sink) {
+func (b *Bar) Render(outputFn func(string)) {
 	output := strings.Builder{}
 	for _, module := range b.modules {
 		output.WriteString(b.fetch(module))
 	}
-	sink.Accept(output.String())
+	outputFn(output.String())
 }
 
 func (b *Bar) Invalidate(module Module) {

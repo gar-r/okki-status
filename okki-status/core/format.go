@@ -22,10 +22,10 @@ type Gap struct {
 }
 
 // Format prints the block formatted with gaps
-func (g *Gap) Format(values ...string) string {
+func (g *Gap) Format(str ...string) string {
 	sb := &strings.Builder{}
 	sb.WriteString(g.Before)
-	for _, value := range values {
+	for _, value := range str {
 		sb.WriteString(value)
 	}
 	sb.WriteString(g.After)
