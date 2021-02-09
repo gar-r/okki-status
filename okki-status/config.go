@@ -26,7 +26,7 @@ var updates = core.Module{
 		Command:         "/usr/bin/checkupdates",
 		IgnoreExitError: true,
 	},
-	Icon:       &core.StaticIcon{Icon: "⟑  "},
+	Icon:       &core.StaticIcon{Icon: " "},
 	Gap:        core.DefaultGap,
 	BlockOrder: core.IconFirst,
 	Refresh:    10 * time.Minute,
@@ -56,8 +56,10 @@ var volume = core.Module{
 	Icon: &core.ThresholdIcon{
 		StatusConverterFn: core.NtoI,
 		Thresholds: []core.Threshold{
-			{Value: 75, Icon: "  "},
-			{Value: 0, Icon: "  "},
+			{Value: 50, Icon: " "},
+			{Value: 25, Icon: " "},
+			{Value: 10, Icon: " "},
+			{Value: 0, Icon: " "},
 		},
 	},
 	Gap:        core.DefaultGap,
