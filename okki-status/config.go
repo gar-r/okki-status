@@ -56,9 +56,9 @@ var volume = core.Module{
 	Icon: &core.ThresholdIcon{
 		StatusConverterFn: core.NtoI,
 		Thresholds: []core.Threshold{
-			{Value: 50, Icon: " "},
-			{Value: 25, Icon: " "},
-			{Value: 10, Icon: " "},
+			{Value: 25, Icon: " "},
+			{Value: 10, Icon: " "},
+			{Value: 1, Icon: " "},
 			{Value: 0, Icon: " "},
 		},
 	},
