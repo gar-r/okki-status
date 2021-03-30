@@ -18,11 +18,10 @@ Make sure, that you have Go (version 1.15 or above) installed on your system.
 3. build: `make build`
 4. install: `make install`
 
-Install will add the following binaries to your system:
+Install will add the following binary to your system:
 
 ```
 /usr/local/bin/okki-status
-/usr/local/bin/okki-refresh
 ```
 
 ### Dependencies
@@ -107,13 +106,9 @@ In some cases it is not efficient for the module to continuously poll the system
 
 Good examples for this are the **brightness** and **volume** modules. These values rarely change _by themselves_ so a relatively rare polling rate is sufficient. However when the user changes the volume or brightness manually, we want to update the status bar as promptly as possible.
 
-For this specific scenario you can use the bundled `okki-refresh` binary, which can take one or more module names as command line argument, and will send an a signal to `okki-status` to immediately refresh them. For example, in order to refresh the modules `brightness` and `volume`, you would call `okki-refresh` with the following arguments:
+For this specific scenario you can use the [okki-refresh](https://github.com/garricasaurus/okki-refresh) utility. Calling `okki-refresh` can send a signal to `okki-status` to immediately refresh a given module. 
 
-```
-okki-refresh brightness volume
-```
-
-This will force the modules with matching _name_ to refresh immediately, and the status bar will also redraw them. Other modules will not refresh, avoiding unneccessary system calls.
+For more details, see the `okki-refresh` [readme](https://github.com/garricasaurus/okki-refresh/readme.md)
 
 #### Binding multimedia keys
 
