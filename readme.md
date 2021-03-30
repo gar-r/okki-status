@@ -16,7 +16,7 @@ Make sure, that you have Go (version 1.15 or above) installed on your system.
 1. clone or download the source code
 2. switch to the source directory
 3. build: `make build`
-4. install: `make install`
+4. install: `sudo make clean install`
 
 Install will add the following binary to your system:
 
