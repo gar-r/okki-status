@@ -1,4 +1,4 @@
-package providers
+package module
 
 import (
 	"fmt"
@@ -6,33 +6,34 @@ import (
 	"os/exec"
 	"regexp"
 	"strconv"
+
+	"hu.okki.okki-status/core"
 )
 
 // RAM provides system memory related information
 type RAM struct {
 }
 
-// GetStatus returns the used system memory percentage
-func (r *RAM) GetStatus() string {
+// Status returns the used system memory percentage
+func (r *RAM) Status() string {
 	raw, err := r.getInfo()
-	const errValue = ":("
 	if err != nil {
-		return errValue
+		return core.StatusError
 	}
 	var re = regexp.MustCompile(`Mem:\s+(\d+)\s+(\d+)`)
 	if match := re.FindSubmatch(raw); len(match) >= 3 {
 		total, err := strconv.ParseFloat(string(match[1]), 64)
 		if err != nil {
-			return errValue
+			return core.StatusError
 		}
 		used, err := strconv.ParseFloat(string(match[2]), 64)
 		if err != nil {
-			return errValue
+			return core.StatusError
 		}
 		percentUsed := math.Round(used / total * 100)
 		return fmt.Sprintf("%.0f%%", percentUsed)
 	}
-	return errValue
+	return core.StatusError
 }
 
 func (r *RAM) getInfo() ([]byte, error) {

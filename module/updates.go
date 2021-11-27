@@ -1,9 +1,11 @@
-package providers
+package module
 
 import (
 	"os/exec"
 	"strconv"
 	"strings"
+
+	"hu.okki.okki-status/core"
 )
 
 // Updates provides the number of available updates
@@ -18,8 +20,8 @@ type Updates struct {
 	IgnoreExitError bool
 }
 
-// GetStatus returns the number of updates as string
-func (u *Updates) GetStatus() string {
+// Status returns the number of updates as string
+func (u *Updates) Status() string {
 	out, err := exec.Command(u.Command, u.Args...).Output()
 	if err != nil {
 		if u.IgnoreExitError {
@@ -27,7 +29,7 @@ func (u *Updates) GetStatus() string {
 				return "0"
 			}
 		}
-		return "?"
+		return core.StatusError
 	}
 	count := countNonEmptyLines(string(out))
 	return strconv.Itoa(count)

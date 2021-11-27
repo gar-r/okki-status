@@ -1,38 +1,27 @@
-package main
+package refresh
 
 import (
-	"errors"
 	"log"
 	"net/http"
 	"strings"
-
-	"hu.okki.okki-status/core"
 )
 
-func listenForExternal() {
+var addr = ":12650"
+
+func Listen() {
 	http.HandleFunc("/invalidate/", invalidateHandler)
 	log.Fatal(http.ListenAndServe(addr, nil))
 }
 
 func invalidateHandler(w http.ResponseWriter, r *http.Request) {
-	module, err := findModule(r)
-	if err != nil {
+	name := getName(r)
+	module := find(name)
+	if module == nil {
 		w.WriteHeader(http.StatusNotFound)
 		return
 	}
-	bar.Invalidate(module)
-	bar.Render(outputFn)
+	refresh(module)
 	w.WriteHeader(http.StatusOK)
-}
-
-func findModule(r *http.Request) (core.Module, error) {
-	name := getName(r)
-	for _, module := range modules {
-		if module.Name == name {
-			return module, nil
-		}
-	}
-	return core.Module{}, errors.New("module not found: " + name)
 }
 
 func getName(r *http.Request) string {

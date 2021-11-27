@@ -2,37 +2,36 @@ package core
 
 import (
 	"testing"
+
+	"github.com/stretchr/testify/assert"
 )
 
-func Test_NewBar(t *testing.T) {
-	modules := make([]Module, 0)
-	bar := NewBar(modules)
-	if bar == nil {
-		t.Errorf("expected non-nill value")
-	}
-}
+func Test_Block(t *testing.T) {
 
-func Test_Render(t *testing.T) {
-	modules := []Module{
-		makeTestModule("mod1", "status1"),
-		makeTestModule("mod2", "status2"),
-	}
-	bar := NewBar(modules)
+	mod := &tester{T: "foo"}
 
-	var actual string
-	bar.Render(func(s string) {
-		actual = s
+	t.Run("simple block", func(t *testing.T) {
+		b := &Block{Module: mod}
+		s := b.Status()
+		assert.Equal(t, "foo", s)
 	})
 
-	expected := "|status1||status2|"
-	if expected != actual {
-		t.Errorf("expected %v, got %v", expected, actual)
-	}
+	t.Run("block with prefix and postfix", func(t *testing.T) {
+		b := &Block{
+			Module:  mod,
+			Prefix:  "===",
+			Postfix: "---",
+		}
+		s := b.Status()
+		assert.Equal(t, "===foo---", s)
+	})
+
 }
 
-func Test_Invalidate(t *testing.T) {
-	module := makeTestModule("mod", "status")
-	bar := NewBar([]Module{module})
+type tester struct {
+	T string
+}
 
-	bar.Invalidate(module)
+func (t *tester) Status() string {
+	return t.T
 }
