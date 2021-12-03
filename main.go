@@ -1,48 +1,22 @@
 package main
 
 import (
-	"flag"
+	"time"
 
-	"hu.okki.okki-status/core"
+	"hu.okki.okki-status/config"
+	"hu.okki.okki-status/refresh"
 )
 
-var debug bool
-var outputFn func(string)
-
-var bar = core.NewBar(modules)
-var events = make(chan core.Module, 100)
-
 func main() {
-	parseFlags()
-	initSink()
-	go waitForEvents()
-	schedule()
-	listenForExternal()
+	startRenderLoop()
+	refresh.Listen()
 }
 
-func parseFlags() {
-	flag.BoolVar(&debug, "debug", false, "print to stdout instead of xroot")
-	flag.Parse()
-}
-
-func initSink() {
-	if debug {
-		outputFn = stdout
-	} else {
-		outputFn = xroot
-	}
-	bar.Render(outputFn)
-}
-
-func schedule() {
-	for _, module := range modules {
-		module.Schedule(events)
-	}
-}
-
-func waitForEvents() {
-	for module := range events {
-		bar.Invalidate(module)
-		bar.Render(outputFn)
-	}
+func startRenderLoop() {
+	t := time.NewTicker(config.Interval)
+	go func() {
+		for range t.C {
+			config.R.Render(config.B)
+		}
+	}()
 }

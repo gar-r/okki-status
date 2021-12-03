@@ -1,9 +1,11 @@
-package providers
+package module
 
 import (
 	"fmt"
 	"os/exec"
 	"regexp"
+
+	"hu.okki.okki-status/core"
 )
 
 var ssidRe = regexp.MustCompile(`SSID:\s+(.*)`)
@@ -14,11 +16,11 @@ type WiFi struct {
 	Device string
 }
 
-// GetStatus returns the connected WiFi SSID name and the signal strength
-func (w *WiFi) GetStatus() string {
+// Status returns the connected WiFi SSID name and the signal strength
+func (w *WiFi) Status() string {
 	info := w.getInfo()
 	if info == nil {
-		return ":("
+		return core.StatusError
 	}
 	ssid := w.ssid(info)
 	if ssid != "" {
@@ -28,7 +30,7 @@ func (w *WiFi) GetStatus() string {
 		}
 		return ssid
 	}
-	return "?"
+	return core.StatusUnknown
 }
 
 func (w *WiFi) ssid(info []byte) string {
