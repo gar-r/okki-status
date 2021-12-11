@@ -22,7 +22,7 @@ func (b *Battery) Status() string {
 func (b *Battery) plugInfo() string {
 	status := b.batteryInfo("status")
 	if status == "Charging" {
-		return "()"
+		return " "
 	}
 	return ""
 }
