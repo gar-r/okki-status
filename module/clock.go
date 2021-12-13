@@ -12,5 +12,9 @@ func (c *Clock) Status() string {
 	if c.Format == "" {
 		c.Format = time.ANSIC
 	}
-	return time.Now().Format(c.Format)
+	return timeFn().Format(c.Format)
+}
+
+var timeFn = func() time.Time {
+	return time.Now()
 }
