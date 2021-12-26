@@ -31,7 +31,7 @@ var brightness = &core.Block{
 	Prefix: " ",
 	Module: core.NewCachingModule(
 		&module.Brightness{},
-		5*time.Minute,
+		5*time.Second,
 	),
 }
 
@@ -40,7 +40,7 @@ var volume = &core.Block{
 	Prefix: " ",
 	Module: core.NewCachingModule(
 		&module.Volume{},
-		time.Minute,
+		5*time.Second,
 	),
 }
 
@@ -57,7 +57,7 @@ var wifi = &core.Block{
 		&module.WiFi{
 			Device: "wlan0",
 		},
-		15*time.Second,
+		5*time.Second,
 	),
 }
 
