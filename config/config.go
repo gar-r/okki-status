@@ -12,5 +12,6 @@ var B = core.Bar{
 	volume,
 	brightness,
 	battery,
+	layout,
 	clock,
 }

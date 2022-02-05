@@ -15,6 +15,14 @@ var clock = &core.Block{
 	Module: &module.Clock{Format: "2006-01-02 15:04:05"},
 }
 
+var layout = &core.Block{
+	Name:   "layout",
+	Prefix: " ",
+	Module: &module.KeyboardSw{
+		Identifier: "1:1:AT_Translated_Set_2_keyboard",
+	},
+}
+
 var battery = &core.Block{
 	Name:   "battery",
 	Prefix: " ",

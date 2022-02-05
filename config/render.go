@@ -37,5 +37,9 @@ var R core.Renderer = &renderer.SwayBar{
 			BlockName:      "updates",
 			SeparatorWidth: 25,
 		},
+		{
+			BlockName:      "layout",
+			SeparatorWidth: 25,
+		},
 	},
 }
