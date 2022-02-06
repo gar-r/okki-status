@@ -32,7 +32,9 @@ func (k *KeyboardSw) Status() string {
 	}
 	for _, input := range inputs {
 		if input.Identifier == k.Identifier {
-			return input.Layout[:2]
+			if input.Layout != "" && len(input.Layout) > 1 {
+				return input.Layout[:2]
+			}
 		}
 	}
 	return core.StatusUnknown
