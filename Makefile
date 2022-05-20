@@ -1,5 +1,5 @@
 build:
-	go build -o okki-status
+	go build -o okki-status -buildvcs=false
 
 clean:
 	rm -f okki-status
