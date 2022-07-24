@@ -6,7 +6,7 @@ import (
 	"strconv"
 	"strings"
 
-	"hu.okki.okki-status/core"
+	"okki-status/core"
 )
 
 // Brightness provides screen brightness information

@@ -5,7 +5,7 @@ import (
 	"os/exec"
 	"regexp"
 
-	"hu.okki.okki-status/core"
+	"okki-status/core"
 )
 
 var ssidRe = regexp.MustCompile(`SSID:\s+(.*)`)

@@ -4,9 +4,10 @@ import (
 	"strings"
 	"testing"
 
+	"okki-status/core"
+	"okki-status/module"
+
 	"github.com/stretchr/testify/assert"
-	"hu.okki.okki-status/core"
-	"hu.okki.okki-status/module"
 )
 
 func Test_StdOut(t *testing.T) {

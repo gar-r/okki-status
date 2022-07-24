@@ -1,7 +1,7 @@
 package config
 
 import (
-	"hu.okki.okki-status/core"
+	"okki-status/core"
 )
 
 // bar configuration

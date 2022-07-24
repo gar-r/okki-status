@@ -4,8 +4,9 @@ import (
 	"errors"
 	"testing"
 
+	"okki-status/core"
+
 	"github.com/stretchr/testify/assert"
-	"hu.okki.okki-status/core"
 )
 
 func Test_Ram(t *testing.T) {

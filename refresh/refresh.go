@@ -1,8 +1,8 @@
 package refresh
 
 import (
-	"hu.okki.okki-status/config"
-	"hu.okki.okki-status/core"
+	"okki-status/config"
+	"okki-status/core"
 )
 
 func find(name string) core.Module {

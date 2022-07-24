@@ -3,7 +3,7 @@ package renderer
 import (
 	"fmt"
 
-	"hu.okki.okki-status/core"
+	"okki-status/core"
 )
 
 // StdOut renders the bar using the standard output

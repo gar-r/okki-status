@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"log"
 
-	"hu.okki.okki-status/core"
+	"okki-status/core"
 )
 
 // SwayBar renders using the sway-bar json protocol.

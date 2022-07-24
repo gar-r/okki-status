@@ -6,7 +6,7 @@ import (
 	"regexp"
 	"strconv"
 
-	"hu.okki.okki-status/core"
+	"okki-status/core"
 )
 
 // RAM provides system memory related information

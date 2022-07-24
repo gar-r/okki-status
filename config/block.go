@@ -3,8 +3,8 @@ package config
 import (
 	"time"
 
-	"hu.okki.okki-status/core"
-	"hu.okki.okki-status/module"
+	"okki-status/core"
+	"okki-status/module"
 )
 
 // block declarations

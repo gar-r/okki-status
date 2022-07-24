@@ -5,7 +5,7 @@ import (
 	"strconv"
 	"strings"
 
-	"hu.okki.okki-status/core"
+	"okki-status/core"
 )
 
 // Updates provides the number of available updates

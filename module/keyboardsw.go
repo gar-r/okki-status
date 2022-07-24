@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"os/exec"
 
-	"hu.okki.okki-status/core"
+	"okki-status/core"
 )
 
 // KeyboardSw provides keyboard layout information under Sway

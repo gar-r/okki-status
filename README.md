@@ -18,7 +18,7 @@ sway status bar
 
 Make sure, that you have Go version 1.17 or above.
 
-1. clone the source code: `git clone https://github.com/garricasaurus/okki-status`
+1. clone the source code: `git clone https://git.okki.hu/garric/okki-status`
 2. switch to the source directory: `cd okki-status`
 3. build&install: `sudo make clean install`
 
@@ -189,9 +189,9 @@ In some cases it is not efficient for the module to continuously poll the system
 
 Good examples for this are the **brightness** and **volume** modules. These values rarely change _by themselves_ so a relatively rare polling rate is sufficient. However when the user changes the volume or brightness manually, we want to update the status bar as promptly as possible.
 
-For this specific scenario you can use the [okki-refresh](https://github.com/garricasaurus/okki-refresh) utility. Calling `okki-refresh` can send a signal to `okki-status` to immediately refresh a given module. 
+For this specific scenario you can use the [okki-refresh](https://git.okki.hu/garric/okki-refresh) utility. Calling `okki-refresh` can send a signal to `okki-status` to immediately refresh a given module.
 
-For more details, see the `okki-refresh` [readme](https://github.com/garricasaurus/okki-refresh/readme.md)
+For more details, see the [okki-refresh readme](https://git.okki.hu/garric/okki-refresh).
 
 ### Binding multimedia keys
 

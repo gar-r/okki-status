@@ -1,4 +1,4 @@
-module hu.okki.okki-status
+module okki-status
 
 go 1.17
 

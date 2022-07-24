@@ -4,7 +4,7 @@ import (
 	"os/exec"
 	"strings"
 
-	"hu.okki.okki-status/core"
+	"okki-status/core"
 )
 
 // Volume provides system volume related information

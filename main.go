@@ -3,8 +3,8 @@ package main
 import (
 	"time"
 
-	"hu.okki.okki-status/config"
-	"hu.okki.okki-status/refresh"
+	"okki-status/config"
+	"okki-status/refresh"
 )
 
 func main() {

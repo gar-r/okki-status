@@ -5,7 +5,7 @@ import (
 	"os/exec"
 	"strings"
 
-	"hu.okki.okki-status/core"
+	"okki-status/core"
 )
 
 // XRoot renders the bar using the xsetroot Xorg utility

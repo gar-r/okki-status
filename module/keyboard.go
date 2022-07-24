@@ -4,7 +4,7 @@ import (
 	"os/exec"
 	"regexp"
 
-	"hu.okki.okki-status/core"
+	"okki-status/core"
 )
 
 var layoutRe = regexp.MustCompile(`.*layout:\s*([a-z]*)`)
