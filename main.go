@@ -1,22 +1,19 @@
 package main
 
 import (
-	"time"
-
+	"fmt"
 	"okki-status/config"
-	"okki-status/refresh"
+	"os"
 )
 
 func main() {
-	startRenderLoop()
-	refresh.Listen()
-}
-
-func startRenderLoop() {
-	t := time.NewTicker(config.Interval)
-	go func() {
-		for range t.C {
-			config.R.Render(config.B)
-		}
-	}()
+	f, err := os.Open("etc/example.yaml")
+	if err != nil {
+		panic(err)
+	}
+	conf, err := config.Read(f)
+	if err != nil {
+		panic(err)
+	}
+	fmt.Println(conf.Modules[0].Status())
 }

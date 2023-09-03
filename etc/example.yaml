@@ -1,0 +1,5 @@
+modules:
+  - name: battery
+    provider:
+      type: battery
+      device: BAT0
