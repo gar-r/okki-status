@@ -3,3 +3,24 @@ modules:
     provider:
       type: battery
       device: BAT0
+    appearance:
+      format: '{}'
+      format_short: '{}'
+      color:
+        foreground: #112233ff
+        background: #112233ff
+      border:
+        top: 1
+        bottom: 1
+        left: 2
+        right: 2
+      min_width: 100
+      align: center
+      urgent: false
+      separator:
+        enabled: true
+        block_width: 5
+    alternates:
+      - regex: '^\[B\]: (\d|1\d)%$'
+        appearance:
+          background: #112233ff
