@@ -1,7 +1,6 @@
 package main
 
 import (
-	"fmt"
 	"okki-status/config"
 	"os"
 )
@@ -11,9 +10,9 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	conf, err := config.Read(f)
+	bar, err := config.Parse(f)
 	if err != nil {
 		panic(err)
 	}
-	fmt.Println(conf.Modules[0].Status())
+	bar.Start()
 }

@@ -1,37 +1,65 @@
 package config
 
 import (
+	"errors"
 	"fmt"
 	"io"
 	"okki-status/core"
+	"reflect"
 
 	"gopkg.in/yaml.v3"
 )
 
-type Conf struct {
-	Modules []*core.Module `yaml:"modules"`
-}
+const (
+	errTypeMissing     = "missing type attribute"
+	errUnknownProvider = "unknown provider: %s"
+)
 
-func Read(r io.Reader) (*Conf, error) {
+func Parse(r io.Reader) (*core.Bar, error) {
 	data, err := io.ReadAll(r)
 	if err != nil {
 		return nil, err
 	}
-	conf := &Conf{}
-	err = yaml.Unmarshal(data, conf)
+	bar := &core.Bar{}
+	err = yaml.Unmarshal(data, bar)
 	if err != nil {
 		return nil, err
 	}
-	err = conf.initialize()
-	return conf, err
+	err = initBar(bar)
+	return bar, err
 }
 
-func (c *Conf) initialize() error {
-	for _, m := range c.Modules {
-		err := initProvider(m)
+func initBar(b *core.Bar) error {
+	for _, m := range b.Modules {
+		err := initModule(m)
 		if err != nil {
-			return fmt.Errorf("module initialization error: %s", m.Name)
+			return fmt.Errorf("module %s cannot be initialized: %s", m.Name, err)
 		}
 	}
 	return nil
+}
+
+func initModule(m *core.Module) error {
+	tname, err := typename(m.ProviderConf)
+	if err != nil {
+		return err
+	}
+	ptype, ok := TypeMap[tname]
+	if !ok {
+		return fmt.Errorf(errUnknownProvider, tname)
+	}
+	m.Provider = reflect.New(ptype).Interface().(core.Provider)
+	b, err := yaml.Marshal(m.ProviderConf)
+	if err != nil {
+		return err
+	}
+	return yaml.Unmarshal(b, m.Provider)
+}
+
+func typename(pconf map[string]interface{}) (string, error) {
+	tstr, ok := pconf["type"]
+	if !ok {
+		return "", errors.New(errTypeMissing)
+	}
+	return tstr.(string), nil
 }

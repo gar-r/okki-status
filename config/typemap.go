@@ -1,10 +1,10 @@
 package config
 
 import (
-	"okki-status/impl/provider"
+	"okki-status/provider"
 	"reflect"
 )
 
-var providerTypeMap = map[string]reflect.Type{
+var TypeMap = map[string]reflect.Type{
 	"battery": reflect.TypeOf(provider.Battery{}),
 }

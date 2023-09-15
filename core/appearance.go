@@ -28,7 +28,7 @@ type Separator struct {
 	BlockWidth int  `yaml:"block_width"`
 }
 
-type Alternate struct {
+type Variant struct {
 	Appearance *Appearance `yaml:"appearance"`
 	Regex      string      `yaml:"regex"`
 }

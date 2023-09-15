@@ -1,27 +1,18 @@
 package core
 
-type Provider interface {
-	Status() string
-}
+import (
+	sp "git.okki.hu/garric/swaybar-protocol"
+)
 
+type Provider interface {
+	Run(chan<- *Event)
+}
 type Module struct {
 	Provider     `yaml:"-"`
+	ProviderConf map[string]interface{} `yaml:"provider"`
 	Name         string                 `yaml:"name"`
 	Appearance   *Appearance            `yaml:"appearance"`
-	Alternates   []*Alternate           `yaml:"alternates"`
-	ProviderConf map[string]interface{} `yaml:"provider"`
-	observers    []Observer
-}
-
-func (m *Module) Attach(o Observer) {
-	m.observers = append(m.observers, o)
-}
-
-func (m *Module) Notify() {
-	for _, o := range m.observers {
-		e := Event{m.Status()}
-		o.Update(e)
-	}
+	Variants     []*Variant             `yaml:"variants"`
 }
 
 // FullText:            "fullText",
@@ -41,4 +32,9 @@ func (m *Module) Notify() {
 // Separator:           true,
 // SeparatorBlockWidth: 5,
 // Markup:              MarkupNone,
-//
+func (m *Module) Render(status string) *sp.Body {
+	return &sp.Body{
+		Name: m.Name,
+		// TODO: set appearance, variant, etc
+	}
+}
