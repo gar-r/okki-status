@@ -1,8 +1,7 @@
 modules:
-  - name: battery
+  - name: clock
     provider:
-      type: battery
-      device: BAT0
+      type: clock
     appearance:
       format: '{}'
       format_short: '{}'

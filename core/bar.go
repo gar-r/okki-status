@@ -6,37 +6,43 @@ import (
 	sp "git.okki.hu/garric/swaybar-protocol"
 )
 
+// Bar represents the swaybar
 type Bar struct {
-	eventbus chan *Event
-	Modules  []*Module `yaml:"modules"`
-	cache    []*sp.Body
+	updch   chan *Update
+	Modules []*Module `yaml:"modules"`
+	cache   []*sp.Body
 }
 
+// Start the swaybar
 func (b *Bar) Start() {
-	b.eventbus = make(chan *Event)
+	b.updch = make(chan *Update)
 	b.cache = make([]*sp.Body, len(b.Modules))
-	for _, m := range b.Modules {
-		go m.Run(b.eventbus)
-	}
+	b.renderHeader()
+	go b.processClicks()
+	b.startModules()
 	for {
-		b.handle(<-b.eventbus)
+		b.handleUpdates(<-b.updch)
 	}
 }
 
-func (b *Bar) Render() {
+// renderHeader uses swaybar-protocol to output a header
+func (b *Bar) renderHeader() {
+	sp.Init(os.Stdout, &sp.Header{
+		Version:     1,
+		ClickEvents: true,
+	})
+}
+
+// render uses swaybar-protocol to output the modules from cache
+func (b *Bar) render() {
 	sp.Output(os.Stdout, b.cache)
 }
 
-func (b *Bar) handle(e *Event) {
-	for i, module := range b.Modules {
-		if module.Provider == e.Source {
-			b.cache[i] = module.Render(e.Status)
-		}
+// startModules starts each module in a separate go func,
+// and initializes their click event channel
+func (b *Bar) startModules() {
+	for _, m := range b.Modules {
+		m.clkch = make(chan *Click)
+		go m.Run(b.updch, m.clkch)
 	}
-	b.Render()
-}
-
-type Event struct {
-	Source Provider
-	Status string
 }

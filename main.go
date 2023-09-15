@@ -6,7 +6,7 @@ import (
 )
 
 func main() {
-	f, err := os.Open("etc/example.yaml")
+	f, err := os.Open("/home/garric/projects/okki-status/etc/example.yaml")
 	if err != nil {
 		panic(err)
 	}

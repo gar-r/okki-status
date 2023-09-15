@@ -6,5 +6,5 @@ import (
 )
 
 var TypeMap = map[string]reflect.Type{
-	"battery": reflect.TypeOf(provider.Battery{}),
+	"clock": reflect.TypeOf(provider.Clock{}),
 }
