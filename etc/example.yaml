@@ -5,9 +5,6 @@ modules:
       date_format_alternate: "2006-01-02"
     appearance:
       format: '  %s'
-      separator:
-        enabled: true
-        block_width: 10
     variants:
       - pattern: '^\d{4}-\d{2}-\d{2}$'
         appearance:
