@@ -19,6 +19,7 @@ type Appearance struct {
 type Color struct {
 	Foreground string `yaml:"foreground"`
 	Background string `yaml:"background"`
+	Border     string `yaml:"border"`
 }
 
 // Border encapsulates the border settings for a module.

@@ -3,11 +3,11 @@ modules:
     provider:
       type: clock
     appearance:
-      format: '{}'
-      format_short: '{}'
+      format: '  %s'
+      format_short: '%s'
       color:
-        foreground: #112233ff
-        background: #112233ff
+        foreground: '#ffffffff'
+        background: '#ff2233ff'
       border:
         top: 1
         bottom: 1
@@ -22,4 +22,4 @@ modules:
     alternates:
       - regex: '^\[B\]: (\d|1\d)%$'
         appearance:
-          background: #112233ff
+          background: '#112233ff'

@@ -5,7 +5,11 @@ import (
 	"time"
 )
 
-type Clock struct{}
+type Clock struct {
+	Format          string `yaml:"format"`
+	ShortFormat     string `yaml:"short_format"`
+	AlternateFormat string `yaml:"alternate_format"`
+}
 
 func (c *Clock) Run(ch chan<- *core.Update, click <-chan *core.Click) {
 	format1 := "2006-01-02"

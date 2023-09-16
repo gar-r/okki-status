@@ -1,6 +1,8 @@
 package core
 
 import (
+	"fmt"
+
 	sp "git.okki.hu/garric/swaybar-protocol"
 )
 
@@ -39,17 +41,30 @@ type Module struct {
 // swaybar-protocol body object, which can be directly sent to
 // swaybar for output.
 // The module will use its current state when generating
-// the body object, including the status sent by the Provider,
-// the Appearance, and Appearance Variants, while also setting
-// sensible defaults for settings that were not specified through
-// the configuration file.
-func (m *Module) Render(status string) *sp.Body {
-	return &sp.Body{
-		Name:     m.Name,
-		FullText: status,
-		Align:    sp.AlignRight,
-		// TODO: implement format text
-		// TODO: set appearance
-		// TODO: implement appearance variants
+// the body object, including the Update sent by the Provider,
+// the Appearance, and Appearance Variants.
+func (m *Module) Render(status *Update) *sp.Body {
+	// make body with configured settings
+	body := &sp.Body{
+		Color:               m.Appearance.Color.Foreground,
+		Background:          m.Appearance.Color.Background,
+		Border:              m.Appearance.Color.Border,
+		BorderTop:           m.Appearance.Border.Top,
+		BorderBottom:        m.Appearance.Border.Bottom,
+		BorderLeft:          m.Appearance.Border.Left,
+		BorderRight:         m.Appearance.Border.Right,
+		MinWidth:            m.Appearance.MinWidth,
+		Align:               m.Appearance.Align,
+		Name:                m.Name,
+		Urgent:              m.Appearance.Urgent,
+		Separator:           m.Appearance.Separator.Enabled,
+		SeparatorBlockWidth: m.Appearance.Separator.BlockWidth,
 	}
+
+	// add full and short status text
+	body.FullText = fmt.Sprintf(m.Appearance.Format, status.Status)
+	body.ShortText = fmt.Sprintf(m.Appearance.FormatShort, status.StatusShort)
+	return body
+
+	// TODO: implement appearance variants
 }

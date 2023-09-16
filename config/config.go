@@ -44,6 +44,10 @@ func initModule(m *core.Module) error {
 	if err != nil {
 		return err
 	}
+	// when missing, default module name to provider type name
+	if m.Name == "" {
+		m.Name = tname
+	}
 	ptype, ok := TypeMap[tname]
 	if !ok {
 		return fmt.Errorf(errUnknownProvider, tname)

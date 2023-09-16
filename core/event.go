@@ -14,7 +14,7 @@ import (
 func (b *Bar) handleUpdates(update *Update) {
 	for i, module := range b.Modules {
 		if module.Provider == update.Source {
-			b.cache[i] = module.Render(update.Status)
+			b.cache[i] = module.Render(update)
 		}
 	}
 	b.render()

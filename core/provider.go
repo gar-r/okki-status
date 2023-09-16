@@ -17,8 +17,9 @@ type Provider interface {
 // Update represents a status update by one of the providers
 // associated with a module on the bar.
 type Update struct {
-	Source Provider
-	Status string
+	Source      Provider
+	Status      string
+	StatusShort string
 }
 
 // Click represents a click event on one of the modules.
