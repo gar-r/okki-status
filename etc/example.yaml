@@ -1,25 +1,14 @@
 modules:
-  - name: clock
-    provider:
+  - provider:
       type: clock
+      date_format: "15:04"
+      date_format_alternate: "2006-01-02"
     appearance:
       format: '  %s'
-      format_short: '%s'
-      color:
-        foreground: '#ffffffff'
-        background: '#ff2233ff'
-      border:
-        top: 1
-        bottom: 1
-        left: 2
-        right: 2
-      min_width: 100
-      align: center
-      urgent: false
       separator:
         enabled: true
-        block_width: 5
-    alternates:
-      - regex: '^\[B\]: (\d|1\d)%$'
+        block_width: 10
+    variants:
+      - pattern: '^\d{4}-\d{2}-\d{2}$'
         appearance:
-          background: '#112233ff'
+          format: '  %s'

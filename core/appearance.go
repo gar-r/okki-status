@@ -1,5 +1,7 @@
 package core
 
+import "regexp"
+
 // Appearance encapsulates the attributes that control how a module
 // on is rendered on the Bar.
 // Appearance is typically defined through the configuration file.
@@ -43,6 +45,44 @@ type Separator struct {
 // the modules, for example setting a different background color,
 // or different format text based on the status string.
 type Variant struct {
-	Appearance *Appearance `yaml:"appearance"`
-	Regex      string      `yaml:"regex"`
+	Appearance   *Appearance `yaml:"appearance"`
+	re           *regexp.Regexp
+	reShort      *regexp.Regexp
+	Pattern      string `yaml:"pattern"`
+	PatternShort string `yaml:"pattern_short"`
+}
+
+// Compile the regex patterns contained in the Variant.
+func (v *Variant) Compile() error {
+	if v.Pattern != "" {
+		re, err := regexp.Compile(v.Pattern)
+		if err != nil {
+			return err
+		}
+		v.re = re
+	}
+	if v.PatternShort != "" {
+		re, err := regexp.Compile(v.PatternShort)
+		if err != nil {
+			return err
+		}
+		v.reShort = re
+	}
+	return nil
+}
+
+// Match indicates if s matches using the normal regex pattern.
+func (v *Variant) Match(s string) bool {
+	if v.re == nil {
+		return false
+	}
+	return v.re.MatchString(s)
+}
+
+// Match indicates if s matches using the regex pattern for the short update.
+func (v *Variant) MatchShort(s string) bool {
+	if v.reShort == nil {
+		return false
+	}
+	return v.reShort.MatchString(s)
 }

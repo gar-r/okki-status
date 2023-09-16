@@ -48,6 +48,13 @@ func initModule(m *core.Module) error {
 	if m.Name == "" {
 		m.Name = tname
 	}
+	// pre-compile variant regular expressions
+	for i, v := range m.Variants {
+		if err := v.Compile(); err != nil {
+			return fmt.Errorf("module %s variant #%d contains an invalid Pattern: %s, %s", m.Name, i, v.Pattern, err)
+		}
+	}
+
 	ptype, ok := TypeMap[tname]
 	if !ok {
 		return fmt.Errorf(errUnknownProvider, tname)
