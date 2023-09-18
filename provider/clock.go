@@ -11,22 +11,24 @@ const (
 )
 
 type Clock struct {
-	Format          string `yaml:"date_format"`
-	ShortFormat     string `yaml:"date_format_short"`
-	AlternateFormat string `yaml:"date_format_alternate"`
+	Format          string `yaml:"clock_format"`
+	ShortFormat     string `yaml:"clock_format_short"`
+	AlternateFormat string `yaml:"clock_format_alternate"`
 	showAlternate   bool
 }
 
-func (c *Clock) Run(ch chan<- *core.Update, click <-chan *core.Click) {
+func (c *Clock) Run(ch chan<- core.Update, event <-chan core.Event) {
 	c.initDefaults()
 	t := time.NewTicker(time.Second)
 	for {
 		select {
 		case <-t.C:
 			c.sendUpdate(ch)
-		case <-click:
-			c.showAlternate = !c.showAlternate
-			c.sendUpdate(ch)
+		case e := <-event:
+			if _, ok := e.(*core.Click); ok {
+				c.showAlternate = !c.showAlternate
+				c.sendUpdate(ch)
+			}
 		}
 	}
 }
@@ -40,16 +42,15 @@ func (c *Clock) initDefaults() {
 	}
 }
 
-func (c *Clock) sendUpdate(ch chan<- *core.Update) {
+func (c *Clock) sendUpdate(ch chan<- core.Update) {
 	var format string
 	if c.showAlternate {
 		format = c.AlternateFormat
 	} else {
 		format = c.Format
 	}
-	ch <- &core.Update{
-		Source:      c,
-		Status:      time.Now().Format(format),
-		StatusShort: time.Now().Format(c.ShortFormat),
+	ch <- &core.SimpleUpdate{
+		P: c,
+		T: time.Now().Format(format),
 	}
 }

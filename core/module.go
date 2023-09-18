@@ -1,20 +1,20 @@
 package core
 
 import (
-	"fmt"
+	"text/template"
 
 	sp "git.okki.hu/garric/swaybar-protocol"
 )
 
 // Module represents a block on the bar.
 // It encapsulates the Appearance, a Provider and a channel
-// through which the module can receive mouse click events.
+// through which the module can receive events.
 // Each module is uniquely identitied by its Name.
 type Module struct {
 	Provider     `yaml:"-"`
 	ProviderConf map[string]interface{} `yaml:"provider"`
 	Appearance   *Appearance            `yaml:"appearance"`
-	clkch        chan *Click
+	events       chan Event
 	Name         string     `yaml:"name"`
 	Variants     []*Variant `yaml:"variants"`
 }
@@ -25,7 +25,7 @@ type Module struct {
 // The module will use its current state when generating
 // the body object, including the Update sent by the Provider,
 // the Appearance, and Appearance Variants.
-func (m *Module) Render(update *Update) *sp.Body {
+func (m *Module) Render(update Update) *sp.Body {
 	a := m.getAppearance(update)
 	body := &sp.Body{
 		Name:     m.Name,
@@ -53,21 +53,19 @@ func (m *Module) Render(update *Update) *sp.Body {
 	}
 
 	// add full and short status text
-	body.FullText = fmt.Sprintf(a.Format, update.Status)
-	if m.Appearance.FormatShort != "" {
-		body.ShortText = fmt.Sprintf(a.FormatShort, update.StatusShort)
-	}
+	body.FullText = a.ExecuteFormat(update)
+	body.ShortText = a.ExecuteFormatShort(update)
 
 	return body
 }
 
 // calculate the module appearance based on the configured defaults
 // and the first matching Variant (if any)
-func (m *Module) getAppearance(update *Update) *Appearance {
+func (m *Module) getAppearance(update Update) *Appearance {
 	base := m.Appearance
 	var variant *Appearance
 	for _, v := range m.Variants {
-		if v.Match(update.Status) || v.MatchShort(update.StatusShort) {
+		if v.Match(update.Text()) {
 			variant = v.Appearance
 			break
 		}
@@ -76,11 +74,14 @@ func (m *Module) getAppearance(update *Update) *Appearance {
 		return base
 	}
 	appearance := &Appearance{}
-	appearance.Format = overrideStr(base.Format, variant.Format)
-	appearance.FormatShort = overrideStr(base.Format, variant.FormatShort)
-	appearance.MinWidth = overrideInt(base.MinWidth, variant.MinWidth)
-	appearance.Align = overrideStr(base.Align, variant.Align)
-	appearance.Urgent = overrideBool(base.Urgent, variant.Urgent)
+	appearance.Format = override(base.Format, variant.Format)
+	appearance.FormatShort = override(base.Format, variant.FormatShort)
+	//
+	appearance.formatTmpl = override(base.formatTmpl, variant.formatTmpl)
+	appearance.formatShortTmpl = override(base.formatShortTmpl, variant.formatShortTmpl)
+	appearance.MinWidth = override(base.MinWidth, variant.MinWidth)
+	appearance.Align = override(base.Align, variant.Align)
+	appearance.Urgent = override(base.Urgent, variant.Urgent)
 	if variant.Color == nil {
 		appearance.Color = base.Color
 	} else {
@@ -88,9 +89,9 @@ func (m *Module) getAppearance(update *Update) *Appearance {
 			appearance.Color = variant.Color
 		} else {
 			appearance.Color = &Color{
-				Foreground: overrideStr(base.Color.Foreground, variant.Color.Foreground),
-				Background: overrideStr(base.Color.Background, variant.Color.Background),
-				Border:     overrideStr(base.Color.Border, variant.Color.Border),
+				Foreground: override(base.Color.Foreground, variant.Color.Foreground),
+				Background: override(base.Color.Background, variant.Color.Background),
+				Border:     override(base.Color.Border, variant.Color.Border),
 			}
 		}
 	}
@@ -101,10 +102,10 @@ func (m *Module) getAppearance(update *Update) *Appearance {
 			appearance.Border = variant.Border
 		} else {
 			appearance.Border = &Border{
-				Top:    overrideInt(base.Border.Top, variant.Border.Top),
-				Bottom: overrideInt(base.Border.Bottom, variant.Border.Bottom),
-				Left:   overrideInt(base.Border.Left, variant.Border.Left),
-				Right:  overrideInt(base.Border.Right, variant.Border.Right),
+				Top:    override(base.Border.Top, variant.Border.Top),
+				Bottom: override(base.Border.Bottom, variant.Border.Bottom),
+				Left:   override(base.Border.Left, variant.Border.Left),
+				Right:  override(base.Border.Right, variant.Border.Right),
 			}
 		}
 	}
@@ -115,28 +116,19 @@ func (m *Module) getAppearance(update *Update) *Appearance {
 			appearance.Separator = variant.Separator
 		} else {
 			appearance.Separator = &Separator{
-				Enabled:    overrideBool(base.Separator.Enabled, variant.Separator.Enabled),
-				BlockWidth: overrideInt(base.Separator.BlockWidth, variant.Separator.BlockWidth),
+				Enabled:    override(base.Separator.Enabled, variant.Separator.Enabled),
+				BlockWidth: override(base.Separator.BlockWidth, variant.Separator.BlockWidth),
 			}
 		}
 	}
 	return appearance
 }
 
-func overrideStr(base, override string) string {
-	if override == "" {
+// pick between the base and override value
+func override[T string | int | bool | *template.Template](base, override T) T {
+	var zero T
+	if override == zero {
 		return base
 	}
 	return override
-}
-
-func overrideInt(base, override int) int {
-	return 0
-}
-
-func overrideBool(base, override bool) bool {
-	if override {
-		return true
-	}
-	return base
 }

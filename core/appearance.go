@@ -1,19 +1,61 @@
 package core
 
-import "regexp"
+import (
+	"regexp"
+	"strings"
+	"text/template"
+)
 
 // Appearance encapsulates the attributes that control how a module
 // on is rendered on the Bar.
 // Appearance is typically defined through the configuration file.
 type Appearance struct {
-	Color       *Color     `yaml:"color"`
-	Border      *Border    `yaml:"border"`
-	Separator   *Separator `yaml:"separator"`
-	Format      string     `yaml:"format"`
-	FormatShort string     `yaml:"format_short"`
-	Align       string     `yaml:"align"`
-	MinWidth    int        `yaml:"min_width"`
-	Urgent      bool       `yaml:"urgent"`
+	Color           *Color     `yaml:"color"`
+	Border          *Border    `yaml:"border"`
+	Separator       *Separator `yaml:"separator"`
+	Format          string     `yaml:"format"`
+	formatTmpl      *template.Template
+	FormatShort     string `yaml:"format_short"`
+	formatShortTmpl *template.Template
+	Align           string `yaml:"align"`
+	MinWidth        int    `yaml:"min_width"`
+	Urgent          bool   `yaml:"urgent"`
+}
+
+// CompileTemplates parses the format and short-format templates
+// contained within the Appearance.
+func (a *Appearance) CompileTemplates() (err error) {
+	a.formatTmpl, err = template.New("format").Parse(a.Format)
+	if err != nil {
+		return
+	}
+	a.formatShortTmpl, err = template.New("format_short").Parse(a.FormatShort)
+	return err
+}
+
+// ExecuteFormat processes the format template
+func (a *Appearance) ExecuteFormat(ctx Update) string {
+	if a.Format == "" {
+		return ""
+	}
+	return executeTemplate(a.formatTmpl, ctx)
+}
+
+// ExecuteFormatShort processes the short-format template
+func (a *Appearance) ExecuteFormatShort(ctx Update) string {
+	if a.FormatShort == "" {
+		return ""
+	}
+	return executeTemplate(a.formatShortTmpl, ctx)
+}
+
+func executeTemplate(tmpl *template.Template, ctx Update) string {
+	sb := &strings.Builder{}
+	err := tmpl.Execute(sb, ctx)
+	if err != nil {
+		return "?"
+	}
+	return sb.String()
 }
 
 // Color represents a color on the Bar, and must be

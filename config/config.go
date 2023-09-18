@@ -13,6 +13,9 @@ import (
 const (
 	errTypeMissing     = "missing type attribute"
 	errUnknownProvider = "unknown provider: %s"
+	errModuleInit      = "module %s cannot be initialized: %s"
+	errTemplate        = "module %s template processing error: %s"
+	errVariant         = "module %s variant %d contains an invalid pattern: %s, %s"
 )
 
 func Parse(r io.Reader) (*core.Bar, error) {
@@ -33,7 +36,7 @@ func initBar(b *core.Bar) error {
 	for _, m := range b.Modules {
 		err := initModule(m)
 		if err != nil {
-			return fmt.Errorf("module %s cannot be initialized: %s", m.Name, err)
+			return fmt.Errorf(errModuleInit, m.Name, err)
 		}
 	}
 	return nil
@@ -48,10 +51,15 @@ func initModule(m *core.Module) error {
 	if m.Name == "" {
 		m.Name = tname
 	}
-	// pre-compile variant regular expressions
+	if err = m.Appearance.CompileTemplates(); err != nil {
+		return fmt.Errorf(errTemplate, m.Name, err)
+	}
 	for i, v := range m.Variants {
+		if err := v.Appearance.CompileTemplates(); err != nil {
+			return fmt.Errorf(errTemplate, m.Name, err)
+		}
 		if err := v.Compile(); err != nil {
-			return fmt.Errorf("module %s variant #%d contains an invalid Pattern: %s, %s", m.Name, i, v.Pattern, err)
+			return fmt.Errorf(errVariant, m.Name, i, v.Pattern, err)
 		}
 	}
 

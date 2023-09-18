@@ -11,9 +11,9 @@ import (
 // handleUpdates uses the event source to find the appropriate
 // module and update the bar cache with its actual status.
 // Once the cache is updated, the full bar needs to be rendered.
-func (b *Bar) handleUpdates(update *Update) {
+func (b *Bar) handleUpdates(update Update) {
 	for i, module := range b.Modules {
-		if module.Provider == update.Source {
+		if module.Provider == update.Source() {
 			b.cache[i] = module.Render(update)
 		}
 	}
@@ -49,7 +49,7 @@ func (b *Bar) processClicks() {
 		}
 		for _, module := range b.Modules {
 			if module.Name == ce.Name {
-				module.clkch <- &Click{
+				module.events <- &Click{
 					Name:     ce.Name,
 					Instance: ce.Instance,
 					Button:   ce.Button,

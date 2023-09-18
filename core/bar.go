@@ -8,20 +8,20 @@ import (
 
 // Bar represents the swaybar
 type Bar struct {
-	updch   chan *Update
+	updates chan Update
 	Modules []*Module `yaml:"modules"`
 	cache   []*sp.Body
 }
 
 // Start the swaybar
 func (b *Bar) Start() {
-	b.updch = make(chan *Update)
+	b.updates = make(chan Update)
 	b.cache = make([]*sp.Body, len(b.Modules))
 	b.renderHeader()
 	go b.processClicks()
 	b.startModules()
 	for {
-		b.handleUpdates(<-b.updch)
+		b.handleUpdates(<-b.updates)
 	}
 }
 
@@ -42,7 +42,7 @@ func (b *Bar) render() {
 // and initializes their click event channel
 func (b *Bar) startModules() {
 	for _, m := range b.Modules {
-		m.clkch = make(chan *Click)
-		go m.Run(b.updch, m.clkch)
+		m.events = make(chan Event)
+		go m.Run(b.updates, m.events)
 	}
 }
