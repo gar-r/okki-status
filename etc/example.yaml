@@ -1,15 +1,5 @@
 modules:
   - provider:
-      type: clock
-      clock_format: "15:04"
-      clock_format_alternate: "2006-01-02"
-    appearance:
-      format: '  {{ .Text }}'
-    variants:
-      - pattern: '^\d{4}-\d{2}-\d{2}$'
-        appearance:
-          format: '  {{ .Text }}'
-  - provider:
       type: battery
       device: battery_BAT0
     appearance:
@@ -40,3 +30,19 @@ modules:
         appearance:
           format: '  {{ .Percentage }}'
           urgent: true
+  - provider:
+      type: layout
+      keyboard_identifier: '2821:6582:Asus_Keyboard'
+      shorten: true
+    appearance:
+      format: '  {{ .Text }}'
+  - provider:
+      type: clock
+      clock_format: "15:04"
+      clock_format_alternate: "2006-01-02"
+    appearance:
+      format: '  {{ .Text }}'
+    variants:
+      - pattern: '^\d{4}-\d{2}-\d{2}$'
+        appearance:
+          format: '  {{ .Text }}'
