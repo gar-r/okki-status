@@ -9,3 +9,34 @@ modules:
       - pattern: '^\d{4}-\d{2}-\d{2}$'
         appearance:
           format: '  {{ .Text }}'
+  - provider:
+      type: battery
+      device: battery_BAT0
+    appearance:
+      format: '{{ .Text }}'
+    variants:
+      # any%, charging
+      - pattern: '^\[\+\].*$'
+        appearance:
+          format: '  {{ .Percentage }}'
+      # above 90%
+      - pattern: '^(1\d\d|9\d)%$'
+        appearance:
+          format: '  {{ .Percentage }}'
+      # 60%..89%
+      - pattern: '^[6,7,8]\d%$'
+        appearance:
+          format: '  {{ .Percentage }}'
+      # 30%..59%
+      - pattern: '^[3,4,5]\d%$'
+        appearance:
+          format: '  {{ .Percentage }}'
+      # 10%..29%
+      - pattern: '^[1,2]\d%$'
+        appearance:
+          format: '  {{ .Percentage }}'
+      # 0%..9%
+      - pattern: '^\d%$'
+        appearance:
+          format: '  {{ .Percentage }}'
+          urgent: true

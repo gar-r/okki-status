@@ -19,6 +19,7 @@ type Clock struct {
 
 func (c *Clock) Run(ch chan<- core.Update, event <-chan core.Event) {
 	c.initDefaults()
+	c.sendUpdate(ch) // send an initial update
 	t := time.NewTicker(time.Second)
 	for {
 		select {

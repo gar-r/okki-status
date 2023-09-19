@@ -35,6 +35,19 @@ func (s *SimpleUpdate) Text() string {
 	return s.T
 }
 
+// ErrorUpdate is typically sent when the module state is in error.
+type ErrorUpdate struct {
+	P Provider
+}
+
+func (e *ErrorUpdate) Source() Provider {
+	return e.P
+}
+
+func (e *ErrorUpdate) Text() string {
+	return "?"
+}
+
 // Event represents an external event that a provider can
 // choose to react to.
 type Event interface {
