@@ -37,10 +37,10 @@ func (m *Module) Render(update Update) *sp.Body {
 	if a.Color != nil {
 		body.Color = a.Color.Foreground
 		body.Background = a.Color.Background
-		body.Border = a.Color.Border
 	}
 
 	if a.Border != nil {
+		body.Border = a.Border.Color
 		body.BorderTop = a.Border.Top
 		body.BorderBottom = a.Border.Bottom
 		body.BorderLeft = a.Border.Left
@@ -76,7 +76,6 @@ func (m *Module) getAppearance(update Update) *Appearance {
 	appearance := &Appearance{}
 	appearance.Format = override(base.Format, variant.Format)
 	appearance.FormatShort = override(base.Format, variant.FormatShort)
-	//
 	appearance.formatTmpl = override(base.formatTmpl, variant.formatTmpl)
 	appearance.formatShortTmpl = override(base.formatShortTmpl, variant.formatShortTmpl)
 	appearance.MinWidth = override(base.MinWidth, variant.MinWidth)
@@ -91,7 +90,6 @@ func (m *Module) getAppearance(update Update) *Appearance {
 			appearance.Color = &Color{
 				Foreground: override(base.Color.Foreground, variant.Color.Foreground),
 				Background: override(base.Color.Background, variant.Color.Background),
-				Border:     override(base.Color.Border, variant.Color.Border),
 			}
 		}
 	}
@@ -102,6 +100,7 @@ func (m *Module) getAppearance(update Update) *Appearance {
 			appearance.Border = variant.Border
 		} else {
 			appearance.Border = &Border{
+				Color:  override(base.Border.Color, variant.Border.Color),
 				Top:    override(base.Border.Top, variant.Border.Top),
 				Bottom: override(base.Border.Bottom, variant.Border.Bottom),
 				Left:   override(base.Border.Left, variant.Border.Left),

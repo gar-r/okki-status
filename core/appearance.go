@@ -63,15 +63,15 @@ func executeTemplate(tmpl *template.Template, ctx Update) string {
 type Color struct {
 	Foreground string `yaml:"foreground"`
 	Background string `yaml:"background"`
-	Border     string `yaml:"border"`
 }
 
 // Border encapsulates the border settings for a module.
 type Border struct {
-	Top    int `yaml:"top"`
-	Bottom int `yaml:"bottom"`
-	Left   int `yaml:"left"`
-	Right  int `yaml:"right"`
+	Color  string `yaml:"color"`
+	Top    int    `yaml:"top"`
+	Bottom int    `yaml:"bottom"`
+	Left   int    `yaml:"left"`
+	Right  int    `yaml:"right"`
 }
 
 // Separator contains the swaybar seprarator related settings.

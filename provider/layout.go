@@ -5,6 +5,7 @@ import (
 	"io"
 	"okki-status/core"
 	"os/exec"
+	"strings"
 )
 
 const (
@@ -25,6 +26,7 @@ func (l *Layout) Run(ch chan<- core.Update, event <-chan core.Event) {
 		return
 	}
 	l.sendLayoutUpdate(ch, layout)
+	go l.listenForClickEvents(event)
 	l.listenForUpdates(ch)
 }
 
@@ -75,6 +77,14 @@ func (l *Layout) listenForUpdates(ch chan<- core.Update) {
 	}
 }
 
+func (l *Layout) listenForClickEvents(event <-chan core.Event) {
+	for {
+		<-event
+		cmd := exec.Command("swaymsg", "input", "type:keyboard", "xkb_switch_layout", "next")
+		_ = cmd.Run()
+	}
+}
+
 func (l *Layout) sendLayoutUpdate(ch chan<- core.Update, layout string) {
 	var text string
 	if l.Shorten {
@@ -89,10 +99,11 @@ func (l *Layout) sendLayoutUpdate(ch chan<- core.Update, layout string) {
 }
 
 func shorten(layout string) string {
-	if len(layout) < 2 {
-		return layout
+	layoutLower := strings.ToLower(layout)
+	if len(layoutLower) < 2 {
+		return layoutLower
 	}
-	return layout[:2]
+	return layoutLower[:2]
 }
 
 // Input represents a sway input

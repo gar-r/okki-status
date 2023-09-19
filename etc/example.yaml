@@ -8,41 +8,41 @@ modules:
       # any%, charging
       - pattern: '^\[\+\].*$'
         appearance:
-          format: '  {{ .Percentage }}'
+          format: '󰚥 {{ .Percentage }}%'
       # above 90%
       - pattern: '^(1\d\d|9\d)%$'
         appearance:
-          format: '  {{ .Percentage }}'
+          format: '󰁹 {{ .Percentage }}%'
       # 60%..89%
       - pattern: '^[6,7,8]\d%$'
         appearance:
-          format: '  {{ .Percentage }}'
+          format: '󰂀 {{ .Percentage }}%'
       # 30%..59%
       - pattern: '^[3,4,5]\d%$'
         appearance:
-          format: '  {{ .Percentage }}'
+          format: '󰁾 {{ .Percentage }}%'
       # 10%..29%
       - pattern: '^[1,2]\d%$'
         appearance:
-          format: '  {{ .Percentage }}'
+          format: '󰁼 {{ .Percentage }}%'
       # 0%..9%
       - pattern: '^\d%$'
         appearance:
-          format: '  {{ .Percentage }}'
+          format: '󰁺 {{ .Percentage }}%'
           urgent: true
   - provider:
       type: layout
       keyboard_identifier: '2821:6582:Asus_Keyboard'
       shorten: true
     appearance:
-      format: '  {{ .Text }}'
+      format: '󰌌  {{ .Text }}'
   - provider:
       type: clock
       clock_format: "15:04"
       clock_format_alternate: "2006-01-02"
     appearance:
-      format: '  {{ .Text }}'
+      format: '󰥔  {{ .Text }}'
     variants:
       - pattern: '^\d{4}-\d{2}-\d{2}$'
         appearance:
-          format: '  {{ .Text }}'
+          format: '󰃭  {{ .Text }}'
