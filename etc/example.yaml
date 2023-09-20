@@ -8,6 +8,17 @@ modules:
         appearance:
           urgent: true
   - provider:
+      type: brightness
+    appearance:
+      format: '󰃠  {{ .Text }}'
+    variants:
+      - pattern: '^[4,5,6]\d%$'
+        appearance:
+          format: '󰃞  {{ .Text }}'
+      - pattern: '^[1,2,3]*\d%$'
+        appearance:
+          format: '󰃜  {{ .Text }}'
+  - provider:
       type: volume
       show_mic: true
     appearance:
