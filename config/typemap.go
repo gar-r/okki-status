@@ -10,4 +10,5 @@ var TypeMap = map[string]reflect.Type{
 	"battery": reflect.TypeOf(provider.Battery{}),
 	"layout":  reflect.TypeOf(provider.Layout{}),
 	"volume":  reflect.TypeOf(provider.Volume{}),
+	"memory":  reflect.TypeOf(provider.Memory{}),
 }

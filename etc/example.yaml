@@ -1,5 +1,13 @@
 modules:
   - provider:
+      type: memory
+    appearance:
+      format: '󰍛 {{ .Text }}'
+    variants:
+      - pattern: '^(1\d\d|9\d)%$'
+        appearance:
+          urgent: true
+  - provider:
       type: volume
       show_mic: true
     appearance:

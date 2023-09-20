@@ -3,6 +3,7 @@ package core
 import (
 	"encoding/json"
 	"errors"
+	"io"
 	"os"
 
 	sp "git.okki.hu/garric/swaybar-protocol"
@@ -85,18 +86,26 @@ func (b *Bar) processClicks() {
 	// read begin array token ('[')
 	token, err := dec.Token()
 	if err != nil {
-		b.errors <- err
+		if err == io.EOF {
+			return // EOF reached, stop reading
+		} else {
+			b.errors <- err
+		}
 	}
 	if token != json.Delim('[') {
 		b.errors <- errors.New("unexpected start delimiter on stdin")
 	}
 
 	// decode click events as they appear on stdin
-	for dec.More() {
+	for {
 		ce := &sp.ClickEvent{}
 		err := dec.Decode(ce)
 		if err != nil {
-			b.errors <- err
+			if err == io.EOF {
+				return // EOF reached, stop reading
+			} else {
+				b.errors <- err
+			}
 		}
 		for _, module := range b.Modules {
 			if module.Name == ce.Name {
