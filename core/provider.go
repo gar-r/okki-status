@@ -47,22 +47,3 @@ func (e *ErrorUpdate) Source() Provider {
 func (e *ErrorUpdate) Text() string {
 	return "?"
 }
-
-// Event represents an external event that a provider can
-// choose to react to.
-type Event interface {
-	ModuleName() string
-}
-
-// Click represents a click event on one of the modules.
-type Click struct {
-	Name     string
-	Instance string
-	Button   int
-	RelX     int
-	RelY     int
-}
-
-func (c *Click) ModuleName() string {
-	return c.Name
-}

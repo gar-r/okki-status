@@ -14,5 +14,8 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	bar.Start()
+	err = bar.Start()
+	if err != nil {
+		panic(err)
+	}
 }

@@ -79,9 +79,11 @@ func (l *Layout) listenForUpdates(ch chan<- core.Update) {
 
 func (l *Layout) listenForClickEvents(event <-chan core.Event) {
 	for {
-		<-event
-		cmd := exec.Command("swaymsg", "input", "type:keyboard", "xkb_switch_layout", "next")
-		_ = cmd.Run()
+		e := <-event
+		if _, ok := e.(*core.Click); ok {
+			cmd := exec.Command("swaymsg", "input", "type:keyboard", "xkb_switch_layout", "next")
+			_ = cmd.Run()
+		}
 	}
 }
 
