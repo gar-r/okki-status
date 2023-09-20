@@ -1,5 +1,16 @@
 modules:
   - provider:
+      type: volume
+      show_mic: true
+    appearance:
+      format: '
+        {{- if .SinkMuted -}}󰝟 
+        {{else}}󰖀 {{ .SinkVolume }}%
+        {{end}} 
+        {{if .SourceMuted}}󰍭 
+        {{else}}󰍬 {{ .SourceVolume }}%
+        {{end}}'
+  - provider:
       type: battery
       device: battery_BAT0
     appearance:
