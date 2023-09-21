@@ -12,4 +12,5 @@ var TypeMap = map[string]reflect.Type{
 	"volume":     reflect.TypeOf(provider.Volume{}),
 	"memory":     reflect.TypeOf(provider.Memory{}),
 	"brightness": reflect.TypeOf(provider.Brightness{}),
+	"updates":    reflect.TypeOf(provider.Updates{}),
 }

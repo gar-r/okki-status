@@ -47,10 +47,7 @@ func initModule(m *core.Module) error {
 	if err != nil {
 		return err
 	}
-	// when missing, default module name to provider type name
-	if m.Name == "" {
-		m.Name = tname
-	}
+	initModuleDefaults(m, tname)
 	if err = m.Appearance.CompileTemplates(); err != nil {
 		return fmt.Errorf(errTemplate, m.Name, err)
 	}
@@ -73,6 +70,20 @@ func initModule(m *core.Module) error {
 		return err
 	}
 	return yaml.Unmarshal(b, m.Provider)
+}
+
+func initModuleDefaults(m *core.Module, tname string) {
+	// when missing, default module name to provider type name
+	if m.Name == "" {
+		m.Name = tname
+	}
+	// set a default appearance
+	if m.Appearance == nil {
+		m.Appearance = &core.Appearance{}
+	}
+	if m.Appearance.Format == "" {
+		m.Appearance.Format = "{{ .Text }}"
+	}
 }
 
 func typename(pconf map[string]interface{}) (string, error) {

@@ -1,5 +1,14 @@
 modules:
   - provider:
+      type: updates
+      refresh_minutes: 60
+      check_command: '/usr/bin/checkupdates'
+      ignore_exit_error: true
+      update_command: '/usr/bin/yay'
+      update_command_args: [ "-Syu" ]
+    appearance:
+      format: '󰣇  {{ .Text }}'
+  - provider:
       type: memory
     appearance:
       format: '󰍛 {{ .Text }}'
