@@ -43,8 +43,9 @@ modules:
       show_mic: true
     appearance:
       format: '
-        {{if .SinkMuted }}󰝟 {{else}}󰖀 {{end}}{{ .SinkVolume }}%
-        {{if .SourceMuted}}󰍭 {{else}}󰍬 {{end}}{{ .SourceVolume }}%'
+        {{if .SinkMuted }}󰝟 {{else}}󰖀 {{ .SinkVolume }}%{{end}}
+        {{ " " }}
+        {{if .SourceMuted}}󰍭 {{else}}󰍬 {{ .SourceVolume }}%{{end}}'
   - provider:
       type: battery
       device: battery_BAT0
