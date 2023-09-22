@@ -12,7 +12,9 @@ Here is a screenshot of it in action:
 
 ### Packages
 
-Coming soon...
+Arch Linux users can use the package [aur/okki-status](https://aur.archlinux.org/packages/okki-status) to install the application.
+
+Other distros, for now please use the manual installation process below.
 
 ### Manual installation
 
