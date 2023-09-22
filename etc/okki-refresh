@@ -1,15 +1,14 @@
 #!/bin/sh
 
-if [ -z "$1" ] 
-then
-  echo "Usage: refresh <module-name>"
-  exit 1
+if [ -z "$1" ]; then
+	echo "Usage: refresh <module-name>"
+	exit 1
 fi
 
 dbus-send \
-  --print-reply \
-  --session \
-  --dest=hu.okki.garric.OkkiStatus \
-  '/hu/okki/garric/OkkiStatus' \
-  hu.okki.garric.OkkiStatus.Refresh \
-  string:\'$1\'
+	--print-reply \
+	--session \
+	--dest=hu.okki.garric.OkkiStatus \
+	'/hu/okki/garric/OkkiStatus' \
+	hu.okki.garric.OkkiStatus.Refresh \
+	string:"$1"
