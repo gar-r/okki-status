@@ -4,8 +4,8 @@ modules:
       refresh_minutes: 60
       check_command: '/usr/bin/checkupdates'
       ignore_exit_error: true
-      update_command: '/usr/bin/yay'
-      update_command_args: [ "-Syu" ]
+      update_command: '/usr/bin/kitty'
+      update_command_args: [ "--hold", "sh", "-c", "/usr/bin/yay", "-Syu" ]
     appearance:
       format: '󰣇  {{ .Text }}'
   - provider:
