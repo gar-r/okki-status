@@ -33,6 +33,9 @@ func (u *Updates) Run(ch chan<- core.Update, events <-chan core.Event) {
 			if _, ok := e.(*core.Click); ok {
 				u.execUpdate()
 			}
+			if _, ok := e.(*core.Refresh); ok {
+				ch <- u.getUpdateCount()
+			}
 		}
 	}
 }
