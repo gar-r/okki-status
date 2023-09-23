@@ -5,6 +5,6 @@ Target=*
 
 [Action]
 Description=Refresh the updates module on the okki-status bar
-#Depends = okki-status
+Depends=okki-status
 When=PostTransaction
 Exec=/usr/bin/sudo -u $USER DBUS_SESSION_BUS_ADDRESS=unix:path=/run/user/$UID/bus /usr/bin/okki-refresh updates
