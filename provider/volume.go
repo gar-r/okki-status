@@ -1,6 +1,7 @@
 package provider
 
 import (
+	"fmt"
 	"okki-status/core"
 	"os/exec"
 	"regexp"
@@ -49,10 +50,19 @@ func (v *VolumeUpdate) Source() core.Provider {
 }
 
 func (v *VolumeUpdate) Text() string {
-	if v.source == "" {
-		return v.sink
+	var sink string
+	if v.SinkMuted {
+		sink = fmt.Sprintf("(M)%s", v.sink)
+	} else {
+		sink = v.sink
 	}
-	return strings.Join([]string{v.sink, v.source}, ",")
+	if v.source == "" {
+		return sink
+	}
+	if v.SourceMuted {
+		return fmt.Sprintf("%s, (M)%s", sink, v.source)
+	}
+	return fmt.Sprintf("%s, %s", sink, v.source)
 }
 
 type Volume struct {
