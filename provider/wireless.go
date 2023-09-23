@@ -28,7 +28,7 @@ type Wireless struct {
 	Refresh       int    `yaml:"refresh"`
 }
 
-func (w *Wireless) Run(ch chan<- core.Update, _ <-chan core.Event) {
+func (w *Wireless) Run(ch chan<- core.Update, events <-chan core.Event) {
 	ch <- w.getWifiInfo()
 
 	if w.Refresh == 0 {
@@ -36,8 +36,14 @@ func (w *Wireless) Run(ch chan<- core.Update, _ <-chan core.Event) {
 	}
 	t := time.NewTicker(time.Duration(w.Refresh) * time.Millisecond)
 	for {
-		<-t.C
-		ch <- w.getWifiInfo()
+		select {
+		case <-t.C:
+			ch <- w.getWifiInfo()
+		case e := <-events:
+			if _, ok := e.(*core.Refresh); ok {
+				ch <- w.getWifiInfo()
+			}
+		}
 	}
 }
 
