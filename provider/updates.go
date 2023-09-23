@@ -56,6 +56,9 @@ func (u *Updates) getUpdateCount() core.Update {
 }
 
 func (u *Updates) execUpdate() {
+	if u.UpdateCommand == "" {
+		return
+	}
 	_ = exec.Command(u.UpdateCommand, u.UpdateCommandArgs...).Start()
 }
 
