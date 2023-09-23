@@ -85,9 +85,9 @@ func (v *Volume) Run(ch chan<- core.Update, event <-chan core.Event) {
 		case e := <-event:
 			if c, ok := e.(*core.Click); ok {
 				handleClick(c)
-			} else if _, ok := e.(*core.Refresh); ok {
-				ch <- v.getVolumeUpdate()
 			}
+			// update the module both for click and other events
+			ch <- v.getVolumeUpdate()
 		}
 	}
 }
