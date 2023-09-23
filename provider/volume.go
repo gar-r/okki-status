@@ -49,6 +49,9 @@ func (v *VolumeUpdate) Source() core.Provider {
 }
 
 func (v *VolumeUpdate) Text() string {
+	if v.source == "" {
+		return v.sink
+	}
 	return strings.Join([]string{v.sink, v.source}, ",")
 }
 
