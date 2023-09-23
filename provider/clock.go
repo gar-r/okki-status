@@ -10,6 +10,20 @@ const (
 	DefaultShortFormat = "15:04"
 )
 
+type ClockUpdate struct {
+	p     core.Provider
+	Full  string
+	Short string
+}
+
+func (c *ClockUpdate) Source() core.Provider {
+	return c.p
+}
+
+func (c *ClockUpdate) Text() string {
+	return c.Full
+}
+
 type Clock struct {
 	Format          string `yaml:"clock_format"`
 	ShortFormat     string `yaml:"clock_format_short"`
@@ -41,6 +55,9 @@ func (c *Clock) initDefaults() {
 	if c.ShortFormat == "" {
 		c.ShortFormat = DefaultShortFormat
 	}
+	if c.AlternateFormat == "" {
+		c.AlternateFormat = DefaultShortFormat
+	}
 }
 
 func (c *Clock) sendUpdate(ch chan<- core.Update) {
@@ -50,8 +67,10 @@ func (c *Clock) sendUpdate(ch chan<- core.Update) {
 	} else {
 		format = c.Format
 	}
-	ch <- &core.SimpleUpdate{
-		P: c,
-		T: time.Now().Format(format),
+	t := time.Now()
+	ch <- &ClockUpdate{
+		p:     c,
+		Full:  t.Format(format),
+		Short: t.Format(c.ShortFormat),
 	}
 }
