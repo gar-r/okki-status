@@ -55,7 +55,8 @@ func initModule(m *core.Module) error {
 		if err := v.Appearance.CompileTemplates(); err != nil {
 			return fmt.Errorf(errTemplate, m.Name, err)
 		}
-		if err := v.Compile(); err != nil {
+		variantName := fmt.Sprintf("%s-variant-%d", m.Name, i)
+		if err := v.Compile(variantName); err != nil {
 			return fmt.Errorf(errVariant, m.Name, i, v.Pattern, err)
 		}
 	}
