@@ -65,7 +65,7 @@ func (m *Module) getAppearance(update Update) *Appearance {
 	base := m.Appearance
 	var variant *Appearance
 	for _, v := range m.Variants {
-		if v.Match(update.Text()) {
+		if v.Match(update) {
 			variant = v.Appearance
 			break
 		}
@@ -76,8 +76,8 @@ func (m *Module) getAppearance(update Update) *Appearance {
 	appearance := &Appearance{}
 	appearance.Format = override(base.Format, variant.Format)
 	appearance.FormatShort = override(base.Format, variant.FormatShort)
-	appearance.formatTmpl = override(base.formatTmpl, variant.formatTmpl)
-	appearance.formatShortTmpl = override(base.formatShortTmpl, variant.formatShortTmpl)
+	appearance.formatCompiled = override(base.formatCompiled, variant.formatCompiled)
+	appearance.formatShortCompiled = override(base.formatShortCompiled, variant.formatShortCompiled)
 	appearance.MinWidth = override(base.MinWidth, variant.MinWidth)
 	appearance.Align = override(base.Align, variant.Align)
 	appearance.Urgent = override(base.Urgent, variant.Urgent)

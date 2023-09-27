@@ -10,26 +10,26 @@ import (
 // on is rendered on the Bar.
 // Appearance is typically defined through the configuration file.
 type Appearance struct {
-	Color           *Color     `yaml:"color"`
-	Border          *Border    `yaml:"border"`
-	Separator       *Separator `yaml:"separator"`
-	Format          string     `yaml:"format"`
-	formatTmpl      *template.Template
-	FormatShort     string `yaml:"format_short"`
-	formatShortTmpl *template.Template
-	Align           string `yaml:"align"`
-	MinWidth        int    `yaml:"min_width"`
-	Urgent          bool   `yaml:"urgent"`
+	Color               *Color     `yaml:"color"`
+	Border              *Border    `yaml:"border"`
+	Separator           *Separator `yaml:"separator"`
+	Format              string     `yaml:"format"`
+	formatCompiled      *template.Template
+	FormatShort         string `yaml:"format_short"`
+	formatShortCompiled *template.Template
+	Align               string `yaml:"align"`
+	MinWidth            int    `yaml:"min_width"`
+	Urgent              bool   `yaml:"urgent"`
 }
 
 // CompileTemplates parses the format and short-format templates
 // contained within the Appearance.
 func (a *Appearance) CompileTemplates() (err error) {
-	a.formatTmpl, err = template.New("format").Parse(a.Format)
+	a.formatCompiled, err = template.New("format").Parse(a.Format)
 	if err != nil {
 		return
 	}
-	a.formatShortTmpl, err = template.New("format_short").Parse(a.FormatShort)
+	a.formatShortCompiled, err = template.New("format_short").Parse(a.FormatShort)
 	return err
 }
 
@@ -38,7 +38,7 @@ func (a *Appearance) ExecuteFormat(ctx Update) string {
 	if a.Format == "" {
 		return ""
 	}
-	return executeTemplate(a.formatTmpl, ctx)
+	return executeTemplate(a.formatCompiled, ctx)
 }
 
 // ExecuteFormatShort processes the short-format template
@@ -46,7 +46,7 @@ func (a *Appearance) ExecuteFormatShort(ctx Update) string {
 	if a.FormatShort == "" {
 		return ""
 	}
-	return executeTemplate(a.formatShortTmpl, ctx)
+	return executeTemplate(a.formatShortCompiled, ctx)
 }
 
 func executeTemplate(tmpl *template.Template, ctx Update) string {
@@ -82,18 +82,21 @@ type Separator struct {
 
 // Variant contains an appearance variant for the module.
 // The appearance Variant is only applied, when the Regex expression
-// matches the actual status string of the module.
-// This can be used to conditionally control the appearance of
+// matches the Template (using the provider's Update as context).
+// If not defined, Template is defaulted to {{.Text}}.
+// This mechanism can be used to conditionally control the appearance of
 // the modules, for example setting a different background color,
 // or different format text based on the status string.
 type Variant struct {
-	Appearance *Appearance `yaml:"appearance"`
-	re         *regexp.Regexp
-	Pattern    string `yaml:"pattern"`
+	Appearance       *Appearance `yaml:"appearance"`
+	re               *regexp.Regexp
+	templateCompiled *template.Template
+	Pattern          string `yaml:"pattern"`
+	Template         string `yaml:"template"`
 }
 
-// Compile the regex pattern contained in the Variant.
-func (v *Variant) Compile() error {
+// Pre-compile the regex pattern and Template contained in the Variant.
+func (v *Variant) Compile(name string) (err error) {
 	if v.Pattern != "" {
 		re, err := regexp.Compile(v.Pattern)
 		if err != nil {
@@ -101,13 +104,19 @@ func (v *Variant) Compile() error {
 		}
 		v.re = re
 	}
-	return nil
+	if v.Template == "" {
+		v.Template = "{{ .Text }}"
+	}
+	v.templateCompiled, err = template.New(name).Parse(v.Template)
+	return err
 }
 
-// Match indicates if s matches using the normal regex pattern.
-func (v *Variant) Match(s string) bool {
+// Match indicates if the Variant's Pattern matches the Variant's Template,
+// where the context for the Template is the given Update.
+func (v *Variant) Match(update Update) bool {
 	if v.re == nil {
 		return false
 	}
+	s := executeTemplate(v.templateCompiled, update)
 	return v.re.MatchString(s)
 }

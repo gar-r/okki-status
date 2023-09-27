@@ -49,11 +49,10 @@ modules:
   - provider:
       type: battery
       device: battery_BAT0
-    appearance:
-      format: '{{ .Text }}'
     variants:
       # any%, charging
-      - pattern: '^\[\+\].*$'
+      - template: '{{.State}}'
+        pattern: '^1&'
         appearance:
           format: '󰚥 {{ .Percentage }}%'
       # above 90%
