@@ -5,7 +5,7 @@ import (
 	"okki-status/core"
 	"time"
 
-	"github.com/pbnjay/memory"
+	sigar "github.com/cloudfoundry/gosigar"
 )
 
 type MemoryUpdate struct {
@@ -28,15 +28,16 @@ func (m *MemoryUpdate) Used() uint64 {
 
 type Memory struct {
 	Refresh int
+	mem     *sigar.Mem
 }
 
 func (m *Memory) Run(ch chan<- core.Update, event <-chan core.Event) {
-	ch <- m.getMemUsage()
-
+	m.mem = &sigar.Mem{}
 	if m.Refresh == 0 {
 		m.Refresh = 5000
 	}
 
+	ch <- m.getMemUsage()
 	ticker := time.NewTicker(time.Duration(m.Refresh) * time.Millisecond)
 	for {
 		<-ticker.C
@@ -45,8 +46,9 @@ func (m *Memory) Run(ch chan<- core.Update, event <-chan core.Event) {
 }
 
 func (m *Memory) getMemUsage() *MemoryUpdate {
-	free := memory.FreeMemory()
-	total := memory.TotalMemory()
+	m.mem.Get()
+	free := m.mem.Free
+	total := m.mem.Total
 	return &MemoryUpdate{
 		p:     m,
 		Free:  free,
