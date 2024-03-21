@@ -3,7 +3,7 @@ package core
 import (
 	"text/template"
 
-	sp "git.okki.hu/garric/swaybar-protocol"
+	sp "github.com/gar-r/swaybar-protocol"
 )
 
 // Module represents a block on the bar.

@@ -6,7 +6,7 @@ import (
 	"io"
 	"os"
 
-	sp "git.okki.hu/garric/swaybar-protocol"
+	sp "github.com/gar-r/swaybar-protocol"
 )
 
 // Bar represents the swaybar
