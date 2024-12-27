@@ -1,6 +1,8 @@
 module okki-status
 
-go 1.21.0
+go 1.22.0
+
+toolchain go1.23.4
 
 require (
 	github.com/gar-r/swaybar-protocol v1.2.0
@@ -10,8 +12,8 @@ require (
 require github.com/godbus/dbus/v5 v5.1.0
 
 require (
-	github.com/cloudfoundry/gosigar v1.3.68
-	github.com/mdlayher/wifi v0.2.0
+	github.com/cloudfoundry/gosigar v1.3.82
+	github.com/mdlayher/wifi v0.3.0
 )
 
 require (
@@ -22,8 +24,9 @@ require (
 	github.com/mdlayher/netlink v1.7.2 // indirect
 	github.com/mdlayher/socket v0.5.1 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
-	golang.org/x/crypto v0.26.0 // indirect
-	golang.org/x/net v0.28.0 // indirect
-	golang.org/x/sync v0.8.0 // indirect
-	golang.org/x/sys v0.24.0 // indirect
+	github.com/rogpeppe/go-internal v1.13.1 // indirect
+	golang.org/x/crypto v0.31.0 // indirect
+	golang.org/x/net v0.33.0 // indirect
+	golang.org/x/sync v0.10.0 // indirect
+	golang.org/x/sys v0.28.0 // indirect
 )
