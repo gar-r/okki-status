@@ -77,6 +77,14 @@ func (v *Volume) Run(ch chan<- core.Update, event <-chan core.Event) {
 	if v.Refresh == 0 {
 		v.Refresh = 60000
 	}
+
+	if v.Refresh > 1000 {
+		// schedule an additional update after 1s to work around startup lag
+		time.AfterFunc(time.Second, func() {
+			ch <- v.getVolumeUpdate()
+		})
+	}
+
 	v.ticker = time.NewTicker(time.Duration(v.Refresh) * time.Millisecond)
 	for {
 		select {
