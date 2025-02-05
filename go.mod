@@ -12,8 +12,8 @@ require (
 require github.com/godbus/dbus/v5 v5.1.0
 
 require (
-	github.com/cloudfoundry/gosigar v1.3.82
-	github.com/mdlayher/wifi v0.3.0
+	github.com/cloudfoundry/gosigar v1.3.86
+	github.com/mdlayher/wifi v0.3.1
 )
 
 require (
@@ -25,8 +25,8 @@ require (
 	github.com/mdlayher/socket v0.5.1 // indirect
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/rogpeppe/go-internal v1.13.1 // indirect
-	golang.org/x/crypto v0.31.0 // indirect
-	golang.org/x/net v0.33.0 // indirect
-	golang.org/x/sync v0.10.0 // indirect
-	golang.org/x/sys v0.28.0 // indirect
+	golang.org/x/crypto v0.32.0 // indirect
+	golang.org/x/net v0.34.0 // indirect
+	golang.org/x/sync v0.11.0 // indirect
+	golang.org/x/sys v0.30.0 // indirect
 )
